@@ -1,6 +1,5 @@
 # Your startup name here
-The Name Game 
-Trying things
+The Name Game
 
 [My Notes](notes.md)
 
@@ -20,7 +19,7 @@ A brief description of the application here. Lorem ipsum dolor sit amet, consect
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] Proper use of Markdown
+- [X] Proper use of Markdown
 - [ ] A concise and compelling elevator pitch
 - [ ] Description of key features
 - [ ] Description of how you will use each technology
@@ -28,20 +27,18 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 ### Elevator pitch
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Have you ever played the Name Game? It is a party game that is fun for groups of all sizes and ages. Everyone writes down a word from a
+certain theme (ex. actors, household items or just names in general) and gives it to the person in charge. This person will then read off the 
+different words. The goal of the game is to reamember each word and figure out who put down which word. Players take turns asking someone in 
+the group if they wrote down a certain word and goes until everyone but one were guessed. However, if you have played this game before you know that
+the person in charge can't play as they saw the handwriting of everyone's words. But the days of arguing over who will have to sit out are over 
+because this app will allow everyone to put in their word and will send the list of words to everyone in a randomized order to ensure fair gameplay!
 
 ### Design
 
-![Design image](placeholder.png)
+![Design1](Design1.png)
+![Design2](Design2.png)
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-```mermaid
-sequenceDiagram
-    actor You
-    actor Website
-    You->>Website: Replace this with your design
-```
 
 ### Key features
 
