@@ -7,13 +7,6 @@
 
 >  In the game, everyone writes down a word from a certain theme (ex. actors, household items or just names in general). Then each player will have time to read the list of different words. The goal of the game is to remember each word and figure out who put down which word. Players take turns asking someone if they wrote down a certain word and goes until everyone but one were guessed. When you guess right then you form a team with that person and keep guessing until you guess incorrectly.
 
-
-> [!NOTE]
->  This is a template for your startup application. You must modify this `README.md` file for each phase of your development. You only need to fill in the section for each deliverable when that deliverable is submitted in Canvas. Without completing the section for a deliverable, the TA will not know what to look for when grading your submission. Feel free to add additional information to each deliverable description, but make sure you at least have the list of rubric items and a description of what you did for each item.
-
-> [!NOTE]
->  If you are not familiar with Markdown then you should review the [documentation](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) before continuing.
-
 ## 🚀 Specification Deliverable
 
 > [!NOTE]
@@ -41,12 +34,13 @@ certain theme and gives it to the person in charge. This person will then read o
 ### Key features
 
 - Secure login over HTTPS
-- Ability to play the Name Game without paper or dedicated leader
+- Play the Name Game without paper or dedicated leader
 - Ability to see how many wins each player has
 - Ability to choose the theme each game
 - Ability to input the winner
 - Ability to see what theme each player played with last
-- Ability for the whole group to look at all the names for however long the group decides.
+- Ability for the whole group to look at all the names for however long the group decides
+- Ability to see a random English Word each game
 
 
 ### Technologies
@@ -56,8 +50,8 @@ I am going to use the required technologies in the following ways.
 - **HTML** - Uses correct HTML structure for applicaction. One for the login, one for the waiting for players page, one for inputing the word, and one for the list of words.
 - **CSS** - Adaptive application styling that will look simple and clean on all sizes.
 - **React** - Accepts input for the theme, what words each person wants as their name, and who won the game. Also allows for logining in and changes screen based on point of the game.
-- **Service** - Save the game wins of each player and the last used theme for each player.
-- **DB/Login** - Keeps track of users, user wins, and the last theme that each user played with in database. No one can play the Name Game unless they first make an account.
+- **Service** - Save/retrieve the game wins of each player and the last used theme for each player. Also it will use a third party to display a random English word.
+- **DB/Login** - Stores users, user wins, the user's word, and the last theme that each user played with in database. No one can play the Name Game unless they first make an account.
 - **WebSocket** - Takes all names inputed and displays a list of them to all players. Also as players join the game the player list will be updated.
 
 ## 🚀 AWS deliverable
