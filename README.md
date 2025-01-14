@@ -54,7 +54,7 @@ certain theme and gives it to the person in charge. This person will then read o
 I am going to use the required technologies in the following ways.
 
 - **HTML** - Uses correct HTML structure for applicaction. One for the login, one for the waiting for players page, one for inputing the word, and one for the list of words.
-- **CSS** - Adaptive application styling that will look simple and clean on all sizes. Also it will have 
+- **CSS** - Adaptive application styling that will look simple and clean on all sizes.
 - **React** - Accepts input for the theme, what words each person wants as their name, and who won the game. Also allows for logining in and changes screen based on point of the game.
 - **Service** - Save the game wins of each player and the last used theme for each player.
 - **DB/Login** - Keeps track of users, user wins, and the last theme that each user played with in database. No one can play the Name Game unless they first make an account.
