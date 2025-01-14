@@ -45,9 +45,8 @@ certain theme and gives it to the person in charge. This person will then read o
 - Ability to see how many wins each player has
 - Ability to choose the theme each game
 - Ability to input the winner
-- Ability to see how many wins each player has
 - Ability to see what theme each player played with last
-- Ability for the whole group to look at the different names for however long the group decides.
+- Ability for the whole group to look at all the names for however long the group decides.
 
 
 ### Technologies
