@@ -27,7 +27,7 @@ certain theme and gives it to the person in charge. This person will then read o
 
 ### Design
 
-![Design1](Design1.png)
+![Design1](Design1.jpg)
 ![Design2](Design2.png)
 ![Design3](Design3.png)
 
