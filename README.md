@@ -29,6 +29,7 @@ certain theme and gives it to the person in charge. This person will then read o
 
 ![Design1](Design1.png)
 ![Design2](Design2.png)
+![Design3](Design3.png)
 
 
 ### Key features
@@ -47,7 +48,7 @@ certain theme and gives it to the person in charge. This person will then read o
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Uses correct HTML structure for applicaction. One for the login, one for the waiting for players page, one for inputing the word, and one for the list of words.
+- **HTML** - Uses correct HTML structure for applicaction. One for the login, one for the waiting for players page, one for inputing the word, one for the list of words, and one for the play again option and adding the winner.
 - **CSS** - Adaptive application styling that will look simple and clean on all sizes.
 - **React** - Accepts input for the theme, what words each person wants as their name, and who won the game. Also allows for logining in and changes screen based on point of the game.
 - **Service** - Save/retrieve the game wins of each player and the last used theme for each player. Also it will use a third party to display a random English word.
