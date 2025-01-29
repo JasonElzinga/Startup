@@ -65,15 +65,15 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **HTML pages** - I did not complete this part of the deliverable.
-- [ ] **Proper HTML element usage** - I did not complete this part of the deliverable.
-- [ ] **Links** - I did not complete this part of the deliverable.
-- [ ] **Text** - I did not complete this part of the deliverable.
-- [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
-- [ ] **Images** - I did not complete this part of the deliverable.
-- [ ] **Login placeholder** - I did not complete this part of the deliverable.
-- [ ] **DB data placeholder** - I did not complete this part of the deliverable.
-- [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
+- [X] **HTML pages** - I added index.html for the table of contents essentially and also for a place to login and creat your acount. about.html is to learn about the game briefly. Play.html is for the waiting screen for players to come in and also choose the theme. Then they will preceed to the choose.html by clicking "Click when everyone is Ready" button. The choose.html will be the place where everyone secretly puts in their word and then click submit. 
+- [X] **Proper HTML element usage** - I correctly used HTML element usage like main, head, etc.
+- [X] **Links** - I added links to go between the different html pages. Also by clicking the previously mentioned button it goes to the other html file.
+- [X] **Text** - There is text to explain the functions of buttons and everything.
+- [X] **3rd party API placeholder** - In the play.html there is a place that says, "Random Word: Tail" which is a placeholder for the random word that people will see while they wait.
+- [X] **Images** - I added a magnifying glass image to the play.html and also a disguised man image to the about.html. There is the same image for the icon on the top of the web browser.
+- [X] **Login placeholder** - On the index.html there is a place to login or create your account.
+- [X] **DB data placeholder** - There is a table in the play.html that displays different info of the players like name, wins, and last theme that they played with. 
+- [X] **WebSocket placeholder** - There are buttons to sumbit the choosen word for the theme that will then be displayed in the section "List of Words" which will be able to toggled on and off with the button "View List of Names".
 
 ## 🚀 CSS deliverable
 
