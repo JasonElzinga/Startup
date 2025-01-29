@@ -1,55 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>The Name Game</title>
-  </head>
-  <body>
-<body>
-    <header>
-        <h1>The Name Game</h1>
-    </header>
-    <p>Random Word:</p>
-    <button onclick="location.href='login.html';">
-        <img src="profil.png" alt="Profile Picture" width="30" height="30">
-    </button>
-    <table>
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Player</th>
-                <th>Wins</th>
-                <th>Last Theme</th>
-            </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>1</td>
-            <td>Jason</td>
-            <td>3</td>
-            <td>Fruit</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Bob</td>
-            <td>0</td>
-            <td>None</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Toby</td>
-          <td>7</td>
-          <td>Famous People</td>
-        </tr>
-      </tbody>
-    </table>
-    <p>Waiting for Game to start...</p>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>The Name Game</title>
+    </head>
+    <body>
+        <header>
+            <h1>Welcome to the Name Game!</h1>
+            <hr>
+            <nav>
+                <menu>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="play.html">Play</a></li>
+                    <li><a href="about.html">About</a></li>
+                </menu>
+            </nav>
 
-    <form>
-        <br><br>
-        <label for="name">Enter Theme:</label><br><br>
-        <input type="text" id="name" name="name" placeholder="Type the choosen theme..." required>
-        <br><br>
-        <button onclick="location.href='choose.html';" type="submit">Click When Everyone is Ready</button>
-    </form>
-</body>
+            <hr>
+        </header>
+
+        <p>Random Word:</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Player</th>
+                    <th>Wins</th>
+                    <th>Last Theme</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>Jason</td>
+                <td>3</td>
+                <td>Fruit</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Bob</td>
+                <td>0</td>
+                <td>None</td>
+            </tr>
+            <tr>
+            <td>3</td>
+            <td>Toby</td>
+            <td>7</td>
+            <td>Famous People</td>
+            </tr>
+        </tbody>
+        </table>
+        <p>Waiting for Game to start...</p>
+
+        <form>
+            <br><br>
+            <label for="name">Enter Theme:</label><br><br>
+            <input type="text" id="name" name="name" placeholder="Type the choosen theme..." required>
+            <br><br>
+            <button onclick="location.href='choose.html';" type="submit">Click When Everyone is Ready</button>
+        </form>
+    </body>
+</html>
