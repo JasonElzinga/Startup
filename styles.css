@@ -1,12 +1,25 @@
-.nav_grid {
+nav {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 100px);
+    grid-template-columns: 1 fr 1 fr;
+    grid-template-rows: 60px;
+    grid-column: 1/2;
 }
 .nav_item {
-    background-color: lightgreen;
     padding: 20px;
     text-align: center;
+    display: flex;
+    justify-content: end;
+    grid-column: 2/3;
+    gap: 30px;
+    
+}
+.nav_name {
+    padding: 20px;
+    text-align: start;
+    justify-content: start;
+    font-weight: bold;
+    font-size: 20px;
+    font-style: 
 }
 
 
