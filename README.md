@@ -79,12 +79,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Header, footer, and main content body** - I did not complete this part of the deliverable.
-- [ ] **Navigation elements** - I did not complete this part of the deliverable.
-- [ ] **Responsive to window resizing** - I did not complete this part of the deliverable.
-- [ ] **Application elements** - I did not complete this part of the deliverable.
-- [ ] **Application text content** - I did not complete this part of the deliverable.
-- [ ] **Application images** - I did not complete this part of the deliverable.
+- [X] **Header, footer, and main content body** - I made these different sections responsive and have color.
+- [X] **Navigation elements** - There is the responsive navigation that is very orange and allows users to go between pages through the links. It also changes size of font when you hover over each word.
+- [X] **Responsive to window resizing** - I did this.
+- [X] **Application elements** - Yes, there are buttons and by clicking "click when everyone is ready" you will go to the choose.html file. There are text boxes to fillout to login and also a table for the players and also a list for the different names that everyone chooses.
+- [X] **Application text content** - There is a body of text in the about.html file that is orange and also in a box. There are different words bolded and different sizes throughout the entire thing.
+- [X] **Application images** - There are two images, one in the play.html and one in the about.html.
 
 ## 🚀 React part 1: Routing deliverable
 
