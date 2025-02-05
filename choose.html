@@ -1,49 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>The Name Game</title>
-        <link rel="icon" href="DisguisedMan.png" />
-    </head>
-    <body>
-        <header>
-            <h1>The Name Game</h1>
-            <hr>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Name Game</title>
+    <link rel="icon" href="DisguisedMan.png" />
+    <link rel="stylesheet" href="styles.css" /><link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+    rel="stylesheet">
+    <link rel="stylesheet" href="choose.css">
+  </head>
+  <body class="bg-secondary text-light">
+    <header class="container-fluid">
+        <div class="w-100">
             <nav>
-                <menu>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="play.html">Play</a></li>
-                    <li><a href="about.html">About</a></li>
-                </menu>
-            </nav>
-            <hr>
-        </header>
-        <main>
-            <h2>Theme: Famous People</h2>
-            <form method="post">
-                <div>
-                    <input type="text" placeholder="Your Name Here" />
+                <div class="nav-name">
+                    <a>The Name Game!</a>
                 </div>
-                <br>
-                <button type="submit">Submit Name</button>
-                <button type="submit">View List of Names</button>
-                <button type="submit">We have a Winner!</button>
-                <button type="submit">Reset</button>
+                <div class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                    <a class="nav-link" href="play.html">Play</a>
+                    <a class="nav-link" href="about.html">About</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+        <main>
+            <div class="theme-title">
+                <h2>Theme: Famous People</h2>
+            </div>
+            <form method="post">
+                <div class="theme-div">
+                    <div class="input-group">
+                        <span class="input-group-text bg-warning text-dark"><i class="bi bi-palette"></i></span>
+                        <input type="text" class="form-control" placeholder="Enter your name!" required>
+                        <button class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <button class="btn btn-secondary" style="background-color: rgb(167, 76, 43);">View List of Names</button>
+                    <button class="btn btn-success">We have a Winner!</button>
+                    <button class="btn btn-danger">Reset Game</button>
+                </div>
             </form>
-            <br><br>
             
 
-            <div>
-                <h3>List of Names</h3>
-                <li>Leonardo DiCarprio</li>
-                <li>Bill Clinton</li>
-                <li>MrBeast</li>
+            <div class="name-list-container p-4 shadow-lg">
+                <h3 class="text-center text-light fw-bold">List of Names!</h3>
+                <ul class="list-group">
+                    <li class="list-group-item d-flex align-items-center">
+                        <i class="bi bi-person-circle me-2 text-primary"></i> Leonardo DiCaprio
+                    </li>
+                    <li class="list-group-item d-flex align-items-center">
+                        <i class="bi bi-person-circle me-2 text-success"></i> Bill Clinton
+                    </li>
+                    <li class="list-group-item d-flex align-items-center">
+                        <i class="bi bi-person-circle me-2 text-danger"></i> MrBeast
+                    </li>
+                </ul>
             </div>
-
             <hr>
         </main>
         <footer>
+            <hr>
             <span>Made by Jason Elzinga</span>
             <br/>
             <a href="https://github.com/JasonElzinga/Startup.git">GitHub Repository</a>

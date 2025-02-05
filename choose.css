@@ -1,0 +1,45 @@
+.theme-title {
+    display: flex;              
+    justify-content: center;    
+    align-items: center;        
+    gap: 10px;                  
+    background-color: orange;   
+    padding: 15px;              
+    border-radius: 10px;        
+    border: 2px solid #d46a00;  
+    max-width: 500px;           
+    margin: 20px auto;          
+    text-align: center;
+    border: 0px;  
+}
+.choose-buttons button{
+    color: #d46a00;
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: center;
+    min-width: 15px;
+    gap: 5px;
+    padding: 10px;
+    border: 0px;
+}
+
+.theme-div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: center;
+    min-width: 15px;
+    gap: 5px;
+    padding: 10px;
+}
+
+.name-list-container {
+    max-width: 700px;
+    min-width: 250px;
+    width: 90%;
+    margin: 10px auto 5px;
+}

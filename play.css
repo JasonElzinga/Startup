@@ -1,0 +1,82 @@
+h2 {
+    font-weight: bold;
+    text-align: center;
+}
+.table {
+    background-color: #f8f9fa; 
+    border-radius: 10px; 
+    margin: 0;
+}
+
+.table th, .table td {
+    vertical-align: middle; 
+}
+.table-hover tbody tr:hover {
+    background-color: #f59042; 
+}
+
+.table th {
+    font-size: 1.2rem;
+    color: #ffffff;
+    background-color: rgb(235, 116, 5); 
+    font-weight: bold;
+}
+
+.table td {
+    font-size: 1rem;
+    color: #333333; 
+}
+.button-div {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 60px;
+    padding: 5px;
+    background-color: darkorange;
+}
+.button-theme {
+    padding: 10px;
+    border-radius: 10px;
+    width: 50%; 
+    max-width: 200px; 
+    height: 55px;
+    font-size: 1rem;
+}
+.container {
+    margin-top: 1rem !important; 
+    margin-bottom: 1rem !important; 
+    padding: 0 !important; 
+}
+.theme-div {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 0;
+    text-align: center;
+}
+.theme-div p, div p {
+    margin: 5px 0;
+    padding: 0px;
+}
+img {
+    max-width: 50px;
+    min-width: none;
+    max-height: 40;
+    min-width: none;
+}
+
+.img-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: center;
+}
+
+.title {
+    margin: 0; 
+    font-size: 1.8rem; 
+    white-space: nowrap;
+}
+
+.img {
+    max-width: 50px;
+    height: auto; 
+}
