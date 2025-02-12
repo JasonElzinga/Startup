@@ -1,13 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './play.css';
-import Button from 'react-bootstrap/Button';
 
 export function Play() {
-  const navigate = useNavigate(); // Initialize navigate function
+  const navigate = useNavigate();
 
   return (
-    <main>
+    <main className='bg-secondary text-light'>
       <div className="container my-1">
         <div className="img-container">
           <h2 className="title">Players</h2>
@@ -47,8 +46,7 @@ export function Play() {
           <button
             onClick={() => navigate('/choose')}
             className="btn btn-primary w-50 me-2"
-            style={{ backgroundColor: 'rgb(57, 43, 151)' }}
-          >
+            style={{ backgroundColor: 'rgb(57, 43, 151)' }}>
             Click When Everyone is Ready
           </button>
         </div>

@@ -12,7 +12,7 @@ import { About } from './about/about';
 export default function App() {
   return (
         <BrowserRouter>
-            <div>
+            <div className='body bg-secondary text-light'>
                 <header className="container-fluid">
                     <div className="w-100">
                         <nav>
