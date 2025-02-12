@@ -20,9 +20,9 @@ export default function App() {
                                 <span>The Name Game!</span>
                             </div>
                             <div className="nav-item">
-                                <NavLink className="nav-link" to="Login">Login</NavLink>
-                                <NavLink className="nav-link" to="Choose">Play</NavLink>
-                                <NavLink className="nav-link" to="About">About</NavLink>
+                                <NavLink className="nav-link" to="/">Login</NavLink>
+                                <NavLink className="nav-link" to="/play">Play</NavLink>
+                                <NavLink className="nav-link" to="/about">About</NavLink>
                             </div>
                         </nav>
                     </div>
@@ -30,7 +30,7 @@ export default function App() {
                 <Routes>
                     <Route path='/' element={<Login />} exact />
                     <Route path='/play' element={<Play />} />
-                    <Route path='/scores' element={<Choose />} />
+                    <Route path='/choose' element={<Choose />} />
                     <Route path='/about' element={<About />} />
                     <Route path='*' element={<NotFound />} />
                 </Routes>

@@ -59,7 +59,7 @@ h2 {
 img {
     max-width: 50px;
     min-width: none;
-    max-height: 40;
+    max-height: 40px;
     min-width: none;
 }
 
@@ -74,9 +74,4 @@ img {
     margin: 0; 
     font-size: 1.8rem; 
     white-space: nowrap;
-}
-
-.img {
-    max-width: 50px;
-    height: auto; 
 }
