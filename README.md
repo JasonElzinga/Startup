@@ -91,8 +91,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [X] **Bundled using Vite** - Yes I did this!
-- [X] **Components** - Placeholders for the react like the list of names and the list of players. There is also the login button where you sumbit your email and password. 
-- [X] **Router** - Login page where you can click on the login, play, and about buttons on the top right which will route in the correct jsx file with the html in it that also reads in the correct css file. You can also click on the "Click when everyone is ready" button to be routed to the choose.jsx file.
+- [X] **Components** - I made react components so you can be routed between the different pages.
+- [X] **Router** - Yes I implemented the router.
 ## 🚀 React part 2: Reactivity
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
