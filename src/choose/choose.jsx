@@ -4,6 +4,11 @@ import "./choose.css"
 
 export function Choose({theme, setTheme}) {
 
+
+    useEffect(() => {
+        setTheme(localStorage.getItem('theme') || "Famous People");
+    }, []);
+
     return (
         <main>
             <div className="theme-title">

@@ -52,7 +52,6 @@ export function Play({user}) {
   function changeChoosenTheme(e) {
     setChoosenTheme(e.target.value);
     localStorage.setItem('theme', choosenTheme);
-    setTheme
   }
 
   function randomWordFunction() {
@@ -74,8 +73,8 @@ export function Play({user}) {
   }
 
   function handleReadyButton(e) {
+      localStorage.setItem("theme", choosenTheme)
       navigate('/choose')
-      changeChoosenTheme(e)
   }
     
 

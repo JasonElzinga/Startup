@@ -14,8 +14,8 @@ export default function App() {
     const [theme, setTheme] = React.useState(localStorage.getItem('theme') || "Famous People");
 
     React.useEffect(() => {
-        localStorage.setItem('theme', theme); // Save the theme to localStorage
-    }, [theme]); // This will run every time 'theme' is updated
+        localStorage.setItem('theme', theme); 
+    }, [theme]); 
 
 
     return (
