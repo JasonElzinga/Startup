@@ -1,9 +1,83 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './play.css';
+//import { loadConfigFromFile } from 'vite';
 
-export function Play() {
+export function Play({user}) {
   const navigate = useNavigate();
+
+  const [index, setIndex] = React.useState(0);
+  const [randomWord, setRandomWord] = React.useState("Epic")
+
+  const randomWords = [
+    "apple", "bicycle", "cloud", "dragon", "elephant", "forest", "galaxy", "horizon", "igloo", "jungle",
+    "kangaroo", "lighthouse", "mountain", "nebula", "ocean", "pyramid", "quasar", "rainbow", "satellite", "tornado",
+    "umbrella", "volcano", "whisper", "xylophone", "yacht", "zeppelin", "avocado", "backpack", "cactus", "dolphin",
+    "emerald", "firefly", "glacier", "harbor", "island", "jigsaw", "koala", "labyrinth", "meteor", "nocturnal",
+    "octopus", "penguin", "quicksand", "rhinoceros", "sunflower", "treasure", "underwater", "vortex", "waterfall", "xenon",
+    "yogurt", "zeppelin", "anchor", "blizzard", "candle", "desert", "echo", "fossil", "gondola", "horizon",
+    "illuminate", "javelin", "kaleidoscope", "lullaby", "marathon", "nectar", "obsidian", "parachute", "quest", "ripple",
+    "silhouette", "telescope", "utopia", "voyager", "wilderness", "xenophobia", "yonder", "zenith", "amethyst", "blueprint",
+    "cascade", "delirium", "enigma", "fjord", "gadget", "halcyon", "inertia", "jubilant", "karma", "luminescent",
+    "mosaic", "nirvana", "oracle", "paradox", "quintessence", "resonance", "serendipity", "tranquil", "unison", "whimsical"
+  ];
+
+  const [players, setPlayers] = useState([
+    { name: "Jason", wins: 3, theme: "Fruit" },
+    { name: "Bob", wins: 0, theme: "None" },
+    { name: "Toby", wins: 7, theme: "Famous People" }
+  ]);
+
+  function getPlayers() {
+    useEffect(() => {
+      const names = ['toby', 'paul', 'ashley'];
+      const wins = ['1', '5', '0']
+      const themes = ["Movies", "Sports", "History"]
+      const randomCount = Math.floor(Math.random() * 100) + 1;
+
+
+      const randomPlayer = {
+        name: names[Math.floor(Math.random() * names.length)],
+        wins: wins[Math.floor(Math.random() * wins.length)],
+        theme: themes[Math.floor(Math.random() * themes.length)]
+      };
+
+      setPlayers(prevPlayers => [...prevPlayers, randomPlayer]);
+    }, 1000)
+
+  }
+
+  const [choosenTheme, setChoosenTheme] = React.useState("Famous People");
+
+  function changeChoosenTheme(e) {
+    setChoosenTheme(e.target.value);
+    localStorage.setItem('theme', choosenTheme);
+    setTheme
+  }
+
+  function randomWordFunction() {
+
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setIndex(prevIndex => (prevIndex +1) % randomWords.length);
+      }, 2000);
+
+      return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+      setRandomWord(randomWords[index])
+    }, [index]);
+
+    return randomWord;
+  }
+
+  function handleReadyButton(e) {
+      navigate('/choose')
+      changeChoosenTheme(e)
+  }
+    
 
   return (
     <main className='bg-secondary text-light'>
@@ -22,29 +96,26 @@ export function Play() {
           </thead>
           <tbody>
             <tr>
-              <td>Jason</td>
+              <td>{user}</td>
               <td>3</td>
               <td>Fruit</td>
             </tr>
-            <tr>
-              <td>Bob</td>
-              <td>0</td>
-              <td>None</td>
-            </tr>
-            <tr>
-              <td>Toby</td>
-              <td>7</td>
-              <td>Famous People</td>
-            </tr>
+            {players.map((player, index) => (
+              <tr key={index}>
+                <td>{player.name}</td>
+                <td>{player.wins}</td>
+                <td>{player.theme}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
       <div className="theme-div">
         <div className="mb-3">
-          <p style={{ textAlign: 'center' }}>Current Theme: Famous People</p>
-          <input type="text" className="button-theme" placeholder="Enter your theme" required />
+          <p style={{ textAlign: 'center' }}>Current Theme: {choosenTheme}</p>
+          <input type="text" className="button-theme" onChange={changeChoosenTheme} placeholder="Enter your theme" required />
           <button
-            onClick={() => navigate('/choose')}
+            onClick={handleReadyButton}
             className="btn btn-primary w-50 me-2"
             style={{ backgroundColor: 'rgb(57, 43, 151)' }}>
             Click When Everyone is Ready
@@ -52,7 +123,7 @@ export function Play() {
         </div>
       </div>
       <div style={{ padding: '0px' }}>
-        <p>Random Word: Tail</p>
+        <p>Random Word: {randomWordFunction()}</p>
       </div>
     </main>
   );

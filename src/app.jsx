@@ -10,7 +10,15 @@ import { About } from './about/about';
 
 
 export default function App() {
-  return (
+    const [user, setUser] = React.useState(localStorage.getItem('user') || null);
+    const [theme, setTheme] = React.useState(localStorage.getItem('theme') || "Famous People");
+
+    React.useEffect(() => {
+        localStorage.setItem('theme', theme); // Save the theme to localStorage
+    }, [theme]); // This will run every time 'theme' is updated
+
+
+    return (
         <BrowserRouter>
             <div className='body bg-secondary text-light'>
                 <header className="container-fluid">
@@ -21,16 +29,16 @@ export default function App() {
                             </div>
                             <div className="nav-item">
                                 <NavLink className="nav-link" to="/">Login</NavLink>
-                                <NavLink className="nav-link" to="/play">Play</NavLink>
+                                {user && <NavLink className="nav-link" to="/play">Play</NavLink>}
                                 <NavLink className="nav-link" to="/about">About</NavLink>
                             </div>
                         </nav>
                     </div>
                 </header>
                 <Routes>
-                    <Route path='/' element={<Login />} exact />
-                    <Route path='/play' element={<Play />} />
-                    <Route path='/choose' element={<Choose />} />
+                    <Route path='/' element={<Login setUser={setUser}/>} exact />
+                    <Route path='/play' element={<Play user={user}/>} />
+                    <Route path='/choose' element={<Choose theme={theme} setTheme={setTheme}/>} />
                     <Route path='/about' element={<About />} />
                     <Route path='*' element={<NotFound />} />
                 </Routes>

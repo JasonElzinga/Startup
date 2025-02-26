@@ -93,6 +93,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [X] **Bundled using Vite** - Yes I did this!
 - [X] **Components** - I made react components so you can be routed between the different pages.
 - [X] **Router** - Yes I implemented the router.
+
 ## 🚀 React part 2: Reactivity
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
