@@ -10,6 +10,7 @@ import { About } from './about/about';
 
 
 export default function App() {
+    
     const [user, setUser] = React.useState(localStorage.getItem('user') || null);
     const [theme, setTheme] = React.useState(localStorage.getItem('theme') || "Famous People");
 
@@ -17,7 +18,7 @@ export default function App() {
         localStorage.setItem('theme', theme); 
     }, [theme]); 
 
-
+    
     return (
         <BrowserRouter>
             <div className='body bg-secondary text-light'>
