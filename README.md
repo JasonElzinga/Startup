@@ -98,8 +98,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **All functionality implemented or mocked out** - I did not complete this part of the deliverable.
-- [ ] **Hooks** - I did not complete this part of the deliverable.
+- [X] **All functionality implemented or mocked out** - Everything works! You can create an account and password and it makes sure that username isn't already taken and that you log in with a real username and password. Locally stores the username and passwords, last theme, and also the different names that were added in the choose.jsx part. It also doesn't allow you to click play unless you have made an account. There is a placeholder that uses setInterval to display the random word. It also uses setInterval to mimick more players joining the play.jsx screen and people adding names in the choose.jsx part. You can show or hide the names and also clear the added names to make it replayable. Also you can add the choosen theme which gets locally stored as the last theme played and displays that theme in the choose.jsx.
+- [X] **Hooks** - Used useState and useEffect in multiple places.
 
 ## 🚀 Service deliverable
 
