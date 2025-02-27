@@ -22,11 +22,12 @@ export function Play({user}) {
   ];
 
   const [players, setPlayers] = useState([]);
+  const themes = ["Movies", "Sports", "History", "Music", "Science"];
+  const [lastTheme, setLastTheme] = React.useState("Famous People")
 
   useEffect(() => {
     const interval = setInterval(() => {
       const fakeNames = ['Toby', 'Paul', 'Ashley', 'Jason', 'Samantha', 'Chris'];
-      const themes = ["Movies", "Sports", "History", "Music", "Science"];
   
       const randomPlayer = {
         name: fakeNames[Math.floor(Math.random() * fakeNames.length)],
@@ -86,7 +87,7 @@ export function Play({user}) {
           <tbody>
             <tr>
               <td>{user}</td>
-              <td>Fruit</td>
+              <td>{lastTheme}</td>
             </tr>
             {players.map((player, index) => (
               <tr key={index}>
