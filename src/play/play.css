@@ -5,8 +5,8 @@ h2 {
 .table {
     background-color: #f8f9fa; 
     border-radius: 10px; 
-    margin: 0;
-    max-width: 700px;
+    margin: 0 auto;
+    max-width: 600px;
     align-content: center;
     justify-content: center;
 }

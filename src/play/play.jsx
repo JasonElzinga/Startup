@@ -76,26 +76,29 @@ export function Play({user, lastTheme}) {
           <h2 className="title">Players</h2>
           <img src="/MagnifyingGlass.png" alt="Magnifying Glass" />
         </div>
-        <table className="table table-striped table-bordered table-hover shadow-lg">
-          <thead className="table-dark">
-            <tr>
-              <th>Player</th>
-              <th>Last Theme</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{user}</td>
-              <td>{lastTheme}</td>
-            </tr>
-            {players.map((player, index) => (
-              <tr key={index}>
-                <td>{player.name}</td>
-                <td>{player.theme}</td>
+        <div>
+          <br/>
+          <table className="table table-striped table-bordered table-hover shadow-lg">
+            <thead className="table-dark">
+              <tr>
+                <th>Player</th>
+                <th>Last Theme</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{user}</td>
+                <td>{lastTheme}</td>
+              </tr>
+              {players.map((player, index) => (
+                <tr key={index}>
+                  <td>{player.name}</td>
+                  <td>{player.theme}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
       <div className="theme-div">
         <div className="mb-3">
