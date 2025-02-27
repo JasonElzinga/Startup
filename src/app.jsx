@@ -12,13 +12,16 @@ import { About } from './about/about';
 export default function App() {
     
     const [user, setUser] = React.useState(localStorage.getItem('user') || null);
+    const [lastTheme, setLastTheme] = React.useState(localStorage.getItem('lastTheme') || null);
     const [theme, setTheme] = React.useState(localStorage.getItem('theme') || "Famous People");
 
     React.useEffect(() => {
         localStorage.setItem('theme', theme); 
+        setLastTheme(theme); 
+        localStorage.setItem('lastTheme', theme); 
     }, [theme]); 
 
-    
+
     return (
         <BrowserRouter>
             <div className='body bg-secondary text-light'>
@@ -38,8 +41,8 @@ export default function App() {
                 </header>
                 <Routes>
                     <Route path='/' element={<Login setUser={setUser}/>} exact />
-                    <Route path='/play' element={<Play user={user}/>} />
-                    <Route path='/choose' element={<Choose theme={theme} setTheme={setTheme}/>} />
+                    <Route path='/play' element={<Play user={user} lastTheme={lastTheme}/>} />
+                    <Route path='/choose' element={<Choose theme={theme} setTheme={setTheme} lastTheme={lastTheme}/>} />
                     <Route path='/about' element={<About />} />
                     <Route path='*' element={<NotFound />} />
                 </Routes>

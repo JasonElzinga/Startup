@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './play.css';
 
-export function Play({user}) {
+export function Play({user, lastTheme}) {
   const navigate = useNavigate();
 
   const [index, setIndex] = React.useState(0);
@@ -23,7 +23,7 @@ export function Play({user}) {
 
   const [players, setPlayers] = useState([]);
   const themes = ["Movies", "Sports", "History", "Music", "Science"];
-  const [lastTheme, setLastTheme] = React.useState("Famous People")
+  const [choosenTheme, setChoosenTheme] = React.useState("Famous People");
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -40,7 +40,6 @@ export function Play({user}) {
     return () => clearInterval(interval);
   }, []);
 
-  const [choosenTheme, setChoosenTheme] = React.useState("Famous People");
 
   function changeChoosenTheme(e) {
     setChoosenTheme(e.target.value);
