@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './play.css';
-//import { loadConfigFromFile } from 'vite';
 
 export function Play({user}) {
   const navigate = useNavigate();
@@ -22,41 +21,33 @@ export function Play({user}) {
     "mosaic", "nirvana", "oracle", "paradox", "quintessence", "resonance", "serendipity", "tranquil", "unison", "whimsical"
   ];
 
-  const [players, setPlayers] = useState([
-    { name: "Jason", wins: 3, theme: "Fruit" },
-    { name: "Bob", wins: 0, theme: "None" },
-    { name: "Toby", wins: 7, theme: "Famous People" }
-  ]);
+  const [players, setPlayers] = useState([]);
 
-  function getPlayers() {
-    useEffect(() => {
-      const names = ['toby', 'paul', 'ashley'];
-      const wins = ['1', '5', '0']
-      const themes = ["Movies", "Sports", "History"]
-      const randomCount = Math.floor(Math.random() * 100) + 1;
-
-
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const fakeNames = ['Toby', 'Paul', 'Ashley', 'Jason', 'Samantha', 'Chris'];
+      const themes = ["Movies", "Sports", "History", "Music", "Science"];
+  
       const randomPlayer = {
-        name: names[Math.floor(Math.random() * names.length)],
-        wins: wins[Math.floor(Math.random() * wins.length)],
+        name: fakeNames[Math.floor(Math.random() * fakeNames.length)],
         theme: themes[Math.floor(Math.random() * themes.length)]
       };
-
+  
       setPlayers(prevPlayers => [...prevPlayers, randomPlayer]);
-    }, 1000)
-
-  }
+    }, 10000);
+  
+    return () => clearInterval(interval);
+  }, []);
 
   const [choosenTheme, setChoosenTheme] = React.useState("Famous People");
 
   function changeChoosenTheme(e) {
     setChoosenTheme(e.target.value);
-    localStorage.setItem('theme', choosenTheme);
+    localStorage.setItem('theme', e.target.value);
   }
 
+
   function randomWordFunction() {
-
-
     useEffect(() => {
       const interval = setInterval(() => {
         setIndex(prevIndex => (prevIndex +1) % randomWords.length);
@@ -89,20 +80,17 @@ export function Play({user}) {
           <thead className="table-dark">
             <tr>
               <th>Player</th>
-              <th>Wins</th>
               <th>Last Theme</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>{user}</td>
-              <td>3</td>
               <td>Fruit</td>
             </tr>
             {players.map((player, index) => (
               <tr key={index}>
                 <td>{player.name}</td>
-                <td>{player.wins}</td>
                 <td>{player.theme}</td>
               </tr>
             ))}
