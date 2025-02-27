@@ -12,13 +12,13 @@ import { About } from './about/about';
 export default function App() {
     
     const [user, setUser] = React.useState(localStorage.getItem('user') || null);
-    const [lastTheme, setLastTheme] = React.useState(localStorage.getItem('lastTheme') || null);
+    const [lastTheme, setLastTheme] = React.useState(localStorage.getItem('lastTheme') || "First Game!");
     const [theme, setTheme] = React.useState(localStorage.getItem('theme') || "Famous People");
 
     React.useEffect(() => {
         localStorage.setItem('theme', theme); 
-        setLastTheme(theme); 
-        localStorage.setItem('lastTheme', theme); 
+        setLastTheme(lastTheme);
+        localStorage.setItem('lastTheme', lastTheme); 
     }, [theme]); 
 
 
@@ -41,7 +41,7 @@ export default function App() {
                 </header>
                 <Routes>
                     <Route path='/' element={<Login setUser={setUser}/>} exact />
-                    <Route path='/play' element={<Play user={user} lastTheme={lastTheme}/>} />
+                    <Route path='/play' element={<Play user={user} lastTheme={lastTheme} setLastTheme={setLastTheme}/>} />
                     <Route path='/choose' element={<Choose theme={theme} setTheme={setTheme} lastTheme={lastTheme}/>} />
                     <Route path='/about' element={<About />} />
                     <Route path='*' element={<NotFound />} />

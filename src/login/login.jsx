@@ -6,10 +6,10 @@ export function Login({setUser}) {
     const navigate = useNavigate();
     const [username, setUsername] = React.useState('');
 
-    function loginUser(e) {
+    function loginUser() {
         const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
 
-        const foundUser = storedUsers.find(user => user.username === username && user.password === password);
+        const foundUser = storedUsers.find(user => user.username == username && user.password == password);
 
         if (foundUser) {
             localStorage.setItem('user', username);
@@ -55,8 +55,6 @@ export function Login({setUser}) {
         setUsers([...users, newUser]);
         alert("Acount made! Now you can login!")
 
-        setUsername("");
-        setPassword("");
     }
 
     React.useEffect(() => {

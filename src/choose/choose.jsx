@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import "./choose.css"
 
-export function Choose({theme, setTheme}) {
+export function Choose({theme, setTheme, lastTheme}) {
     const [showList, setShowList] = React.useState(false);
     const [viewMessage, setViewMessage] = React.useState("Show List of Names to Everyone")
     const [inputName, setInputName] = React.useState("");

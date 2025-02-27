@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './play.css';
 
-export function Play({user, lastTheme}) {
+export function Play({user, lastTheme, setLastTheme}) {
   const navigate = useNavigate();
 
   const [index, setIndex] = React.useState(0);
@@ -64,8 +64,10 @@ export function Play({user, lastTheme}) {
   }
 
   function handleReadyButton(e) {
-      localStorage.setItem("theme", choosenTheme)
-      navigate('/choose')
+    localStorage.setItem("theme", choosenTheme)
+    setLastTheme(choosenTheme)
+    localStorage.setItem("lastTheme", choosenTheme)
+    navigate('/choose')
   }
     
 
