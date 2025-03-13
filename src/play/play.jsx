@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import './play.css';
 // import 'index.js';
 
-export function Play({user, lastTheme, setLastTheme}) {
+export function Play({user, setUser, lastTheme, setLastTheme}) {
   const navigate = useNavigate();
 
   //const [index, setIndex] = React.useState(0);
   const [userInfo, setUserInfo] = React.useState('');
+
 
   useEffect(() => {
     (async () => {
@@ -17,10 +18,13 @@ export function Play({user, lastTheme, setLastTheme}) {
         
         const data = await res.json();
         setUserInfo(data);
+        setUser(data.username)
 
         const themeRes = await fetch('/api/theme');
         const themeData = await themeRes.json();
         setLastTheme(themeData.theme || "First Time!");
+
+
       } catch (error) {
         console.error("Error fetching user data:", error);
       }

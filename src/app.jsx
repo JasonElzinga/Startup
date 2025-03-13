@@ -22,7 +22,8 @@ export default function App() {
         localStorage.setItem('theme', theme); 
         setLastTheme(lastTheme);
         localStorage.setItem('lastTheme', lastTheme); 
-    }, [theme]); 
+    }, [theme]);
+
 
 
     return (
@@ -44,7 +45,7 @@ export default function App() {
                 </header>
                 <Routes>
                     <Route path='/' element={<Login setUser={setUser}/>} exact />
-                    <Route path='/play' element={<Play user={user} lastTheme={lastTheme} setLastTheme={setLastTheme}/>} />
+                    <Route path='/play' element={<Play user={user} setUser = {setUser} lastTheme={lastTheme} setLastTheme={setLastTheme}/>} />
                     <Route path='/choose' element={<Choose theme={theme} setTheme={setTheme} lastTheme={lastTheme}/>} />
                     <Route path='/about' element={<About />} />
                     <Route path='*' element={<NotFound />} />
