@@ -7,7 +7,15 @@ export function Play({user, lastTheme, setLastTheme}) {
   const navigate = useNavigate();
 
   const [index, setIndex] = React.useState(0);
+  const [userInfo, setUserInfo] = React.useState('');
 
+  React.useEffect(() => {
+    (async () => {
+      const res = await fetch('api/user/me');
+      const data = await res.json();
+      setUserInfo(data);
+    })();
+   }, []);
 
   const [players, setPlayers] = useState([]);
   const themes = ["Movies", "Sports", "History", "Music", "Science"];
@@ -75,7 +83,7 @@ export function Play({user, lastTheme, setLastTheme}) {
             </thead>
             <tbody>
               <tr>
-                <td>{user}</td>
+                <td>{userInfo.username}</td>
                 <td>{lastTheme}</td>
               </tr>
               {players.map((player, index) => (
