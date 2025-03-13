@@ -9,13 +9,23 @@ export function Play({user, lastTheme, setLastTheme}) {
   const [index, setIndex] = React.useState(0);
   const [userInfo, setUserInfo] = React.useState('');
 
-  React.useEffect(() => {
+  useEffect(() => {
     (async () => {
-      const res = await fetch('api/user/me');
-      const data = await res.json();
-      setUserInfo(data);
+      try {
+        const res = await fetch('/api/user/me');
+        if (!res.ok) throw new Error("Failed to fetch user");
+        
+        const data = await res.json();
+        setUserInfo(data);
+
+        const themeRes = await fetch('/api/theme');
+        const themeData = await themeRes.json();
+        setLastTheme(themeData.theme || "First Time!");
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
     })();
-   }, []);
+  }, []);
 
   const [players, setPlayers] = useState([]);
   const themes = ["Movies", "Sports", "History", "Music", "Science"];
@@ -45,7 +55,7 @@ export function Play({user, lastTheme, setLastTheme}) {
   const [randomWord, setRandomWord] = useState("Loading...");
 
 
-  // api 3rd party call to get th
+  // api 3rd party call to get the random word
   useEffect(() => {
     fetch("https://random-word-api.herokuapp.com/word")
       .then((response) => response.json())
@@ -58,11 +68,25 @@ export function Play({user, lastTheme, setLastTheme}) {
       });
   }, []);
 
-  function handleReadyButton(e) {
-    localStorage.setItem("theme", choosenTheme)
-    setLastTheme(choosenTheme)
-    localStorage.setItem("lastTheme", choosenTheme)
-    navigate('/choose')
+  async function handleReadyButton() {
+    localStorage.setItem("theme", choosenTheme);
+    setLastTheme(choosenTheme);
+    localStorage.setItem("lastTheme", choosenTheme);
+
+    try {
+      const res = await fetch('/api/updateTheme', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ theme: choosenTheme }),
+      });
+
+      if (!res.ok) throw new Error("Failed to update theme");
+    } catch (error) {
+      console.error("Error updating theme:", error);
+    }
+
+    navigate('/choose');
   }
     
 

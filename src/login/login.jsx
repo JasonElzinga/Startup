@@ -49,24 +49,6 @@ export function Login({setUser}) {
         console.log(username)
     }
 
-
-    function handleAddUser() {
-        if (!username || !password) {
-            alert("Please enter a username and password.");
-            return;
-        }
-
-        if (users.some(user => user.username === username)) {
-            alert("Username already exists. Choose a different one.");
-            return;
-        }
-
-        const newUser = { username, password };
-        setUsers([...users, newUser]);
-        alert("Acount made! Now you can login!")
-
-    }
-
     React.useEffect(() => {
         localStorage.setItem("users", JSON.stringify(users));
     }, [users]);

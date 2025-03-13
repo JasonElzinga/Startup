@@ -8,6 +8,8 @@ export function Choose({theme, setTheme, lastTheme}) {
     const [inputName, setInputName] = React.useState("");
     const [names, setNames] = React.useState([]);
 
+
+
     function updateViewMessage() {
         if (viewMessage == "Show List of Names to Everyone"){
             setViewMessage("Hide List of Names for Everyone")
@@ -28,8 +30,13 @@ export function Choose({theme, setTheme, lastTheme}) {
     }
 
     useEffect(() => {
-        setTheme(localStorage.getItem('theme') || "Famous People");
+        setTheme(localStorage.getItem('theme'));
     }, []);
+
+
+    React.useEffect(() => {
+        
+    })
 
     function updateName(e) {
         setInputName(e.target.value)
