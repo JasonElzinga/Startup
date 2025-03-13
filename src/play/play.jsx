@@ -42,9 +42,10 @@ export function Play({user, lastTheme, setLastTheme}) {
     localStorage.setItem('theme', e.target.value);
   }
 
+  const [randomWord, setRandomWord] = useState("Loading...");
 
-  const [randomWord, setRandomWord] = useState("loading...");
-  // api 3rd party call to fetch random word everytime you reload the page.
+
+  // api 3rd party call to get th
   useEffect(() => {
     fetch("https://random-word-api.herokuapp.com/word")
       .then((response) => response.json())
