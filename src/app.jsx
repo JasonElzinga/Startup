@@ -10,6 +10,9 @@ import { About } from './about/about';
 
 
 export default function App() {
+
+    
+
     
     const [user, setUser] = React.useState(localStorage.getItem('user') || null);
     const [lastTheme, setLastTheme] = React.useState(localStorage.getItem('lastTheme') || "First Game!");
@@ -60,3 +63,4 @@ export default function App() {
 function NotFound() {
     return <main className='container-fluid bg-secondary text-center'>404: Return to sender. Address unknown.</main>;
 }
+

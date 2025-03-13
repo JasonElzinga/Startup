@@ -1,25 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './play.css';
+// import 'index.js';
 
 export function Play({user, lastTheme, setLastTheme}) {
   const navigate = useNavigate();
 
   const [index, setIndex] = React.useState(0);
-  const [randomWord, setRandomWord] = React.useState("Epic")
 
-  const randomWords = [
-    "apple", "bicycle", "cloud", "dragon", "elephant", "forest", "galaxy", "horizon", "igloo", "jungle",
-    "kangaroo", "lighthouse", "mountain", "nebula", "ocean", "pyramid", "quasar", "rainbow", "satellite", "tornado",
-    "umbrella", "volcano", "whisper", "xylophone", "yacht", "zeppelin", "avocado", "backpack", "cactus", "dolphin",
-    "emerald", "firefly", "glacier", "harbor", "island", "jigsaw", "koala", "labyrinth", "meteor", "nocturnal",
-    "octopus", "penguin", "quicksand", "rhinoceros", "sunflower", "treasure", "underwater", "vortex", "waterfall", "xenon",
-    "yogurt", "zeppelin", "anchor", "blizzard", "candle", "desert", "echo", "fossil", "gondola", "horizon",
-    "illuminate", "javelin", "kaleidoscope", "lullaby", "marathon", "nectar", "obsidian", "parachute", "quest", "ripple",
-    "silhouette", "telescope", "utopia", "voyager", "wilderness", "xenophobia", "yonder", "zenith", "amethyst", "blueprint",
-    "cascade", "delirium", "enigma", "fjord", "gadget", "halcyon", "inertia", "jubilant", "karma", "luminescent",
-    "mosaic", "nirvana", "oracle", "paradox", "quintessence", "resonance", "serendipity", "tranquil", "unison", "whimsical"
-  ];
 
   const [players, setPlayers] = useState([]);
   const themes = ["Movies", "Sports", "History", "Music", "Science"];
@@ -47,21 +35,19 @@ export function Play({user, lastTheme, setLastTheme}) {
   }
 
 
-  function randomWordFunction() {
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setIndex(prevIndex => (prevIndex +1) % randomWords.length);
-      }, 2000);
-
-      return () => clearInterval(interval);
-    }, []);
-
-    useEffect(() => {
-      setRandomWord(randomWords[index])
-    }, [index]);
-
-    return randomWord;
-  }
+  const [randomWord, setRandomWord] = useState("loading...");
+  // api 3rd party call to fetch random word everytime you reload the page.
+  useEffect(() => {
+    fetch("https://random-word-api.herokuapp.com/word")
+      .then((response) => response.json())
+      .then((data) => {
+        setRandomWord(data[0]);
+      })
+      .catch((error) => {
+        console.error("Error fetching word:", error);
+        setWord("Failed to load word");
+      });
+  }, []);
 
   function handleReadyButton(e) {
     localStorage.setItem("theme", choosenTheme)
@@ -115,7 +101,7 @@ export function Play({user, lastTheme, setLastTheme}) {
         </div>
       </div>
       <div style={{ padding: '0px' }}>
-        <p>Random Word: {randomWordFunction()}</p>
+        <p>Random Word: {randomWord}</p>
       </div>
     </main>
   );
