@@ -8,6 +8,19 @@ export function Choose({theme, setTheme, lastTheme}) {
     const [inputName, setInputName] = React.useState("");
     const [names, setNames] = React.useState([]);
 
+      useEffect(() => {
+        (async () => {
+          try {
+            const res = await fetch('/api/user/me');
+
+            const themeRes = await fetch('/api/theme');
+            const themeData = await themeRes.json();
+            setTheme(themeData.theme);
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+          }
+        })();
+      }, []);
 
 
     function updateViewMessage() {

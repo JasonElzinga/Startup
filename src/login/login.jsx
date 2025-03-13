@@ -41,12 +41,8 @@ export function Login({setUser}) {
     });
 
 
-
     function passwordChange(e) {
         setPassword(e.target.value);
-        localStorage.setItem("password", e.target.value);
-        console.log(e.target.value)
-        console.log(username)
     }
 
     React.useEffect(() => {

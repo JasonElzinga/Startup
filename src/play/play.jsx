@@ -6,7 +6,7 @@ import './play.css';
 export function Play({user, lastTheme, setLastTheme}) {
   const navigate = useNavigate();
 
-  const [index, setIndex] = React.useState(0);
+  //const [index, setIndex] = React.useState(0);
   const [userInfo, setUserInfo] = React.useState('');
 
   useEffect(() => {
@@ -69,9 +69,9 @@ export function Play({user, lastTheme, setLastTheme}) {
   }, []);
 
   async function handleReadyButton() {
-    localStorage.setItem("theme", choosenTheme);
+    // localStorage.setItem("theme", choosenTheme);
     setLastTheme(choosenTheme);
-    localStorage.setItem("lastTheme", choosenTheme);
+    // localStorage.setItem("lastTheme", choosenTheme);
 
     try {
       const res = await fetch('/api/updateTheme', {
