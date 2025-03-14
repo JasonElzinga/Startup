@@ -105,11 +105,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Node.js/Express HTTP service** - I did not complete this part of the deliverable.
-- [ ] **Static middleware for frontend** - I did not complete this part of the deliverable.
-- [ ] **Calls to third party endpoints** - I did not complete this part of the deliverable.
-- [ ] **Backend service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
+- [X] **Node.js/Express HTTP service** - Yes I did this!
+- [X] **Static middleware for frontend** - Yes I did this as well!
+- [X] **Calls to third party endpoints** - I call a 3rd party endpoint for a random word in my play.jsx file.
+- [X] **Backend service endpoints** - I have this! I have a placeholder for login that stores the current user on the server. I also have endpoints for the theme and the added names.
+- [X] **Frontend calls service endpoints** - I did this! The frontend calls the theme to update the last theme of the user and also updates and gets the list of the names in the choose.jsx. 
+- [X] **Supports registration, login, logout, and restricted endpoint** - Yes it allows for registration, and authenticates the user, checks the cookie to do other requests. 
 
 ## 🚀 DB/Login deliverable
 

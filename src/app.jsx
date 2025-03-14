@@ -2,7 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 
-import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, NavLink, Route, Routes, useNavigate } from 'react-router-dom';
 import { Login } from './login/login';
 import { Play } from './play/play';
 import { Choose } from './choose/choose';
@@ -10,13 +10,10 @@ import { About } from './about/about';
 
 
 export default function App() {
-
-    
-
-    
     const [user, setUser] = React.useState(localStorage.getItem('user') || null);
     const [lastTheme, setLastTheme] = React.useState(localStorage.getItem('lastTheme') || "First Game!");
     const [theme, setTheme] = React.useState(localStorage.getItem('theme') || "Famous People");
+    //const navigate = useNavigate();
 
     React.useEffect(() => {
         localStorage.setItem('theme', theme); 
@@ -24,6 +21,33 @@ export default function App() {
         localStorage.setItem('lastTheme', lastTheme); 
     }, [theme]);
 
+    function LogoutButton({ setUser, navigate }) {
+        const handleLogout = async () => {
+            try {
+                const response = await fetch('/api/auth', {
+                    method: 'DELETE',
+                    credentials: 'include', // Include cookies (session or token)
+                });
+    
+                if (response.ok) {
+                    console.log('User logged out');
+                    setUser(null); // Clear user state on logout
+                    localStorage.removeItem('user');
+                    //navigate('/'); // Navigate to login page after successful logout
+                } else {
+                    console.error('Failed to log out');
+                }
+            } catch (error) {
+                console.error('Error logging out:', error);
+            }
+        };
+    
+        return (
+            <button className="nav-link" onClick={handleLogout}>
+                Logout
+            </button>
+        );
+    }
 
 
     return (
@@ -36,7 +60,8 @@ export default function App() {
                                 <span>The Name Game!</span>
                             </div>
                             <div className="nav-item">
-                                <NavLink className="nav-link" to="/">Login</NavLink>
+                                {user && <NavLink className="nav-link" to="/">Logout</NavLink>}
+                                {!user && <NavLink className="nav-link" to="/">Login</NavLink>}
                                 {user && <NavLink className="nav-link" to="/play">Play</NavLink>}
                                 <NavLink className="nav-link" to="/about">About</NavLink>
                             </div>

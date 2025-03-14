@@ -34,8 +34,6 @@ export function Login({setUser}) {
         }
     }
     
-
-
     const [users, setUsers] = React.useState(() => {
         return JSON.parse(localStorage.getItem("users")) || [];
     });
@@ -44,6 +42,10 @@ export function Login({setUser}) {
     function passwordChange(e) {
         setPassword(e.target.value);
     }
+
+    React.useEffect(() => {
+        setUser(null);
+    }, );
 
     React.useEffect(() => {
         localStorage.setItem("users", JSON.stringify(users));
