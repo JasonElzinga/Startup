@@ -8,7 +8,9 @@ export function Choose({theme, setTheme, lastTheme}) {
     const [inputName, setInputName] = React.useState("");
     const [names, setNames] = React.useState([]);
 
-      useEffect(() => {
+
+
+    useEffect(() => {
         (async () => {
           try {
             const res = await fetch('/api/user/me');
@@ -21,7 +23,6 @@ export function Choose({theme, setTheme, lastTheme}) {
           }
         })();
       }, []);
-
 
     function updateViewMessage() {
         if (viewMessage == "Show List of Names to Everyone"){
@@ -57,13 +58,29 @@ export function Choose({theme, setTheme, lastTheme}) {
     }
 
     function addName() {
-        const newName = {
-            name: inputName.trim()
-        }
-        const updatedNames = [...names, newName];
+        const newName = inputName.trim();
+        if (!newName) return;
+    
+        const updatedNames = [...names, { name: newName }];
         setNames(updatedNames);
-        localStorage.setItem("listNames", JSON.stringify(updatedNames));
+        
+        (async () => {
+            try {
+                const res = await fetch('/api/updateNames', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ listNames: updatedNames })
+                });
+    
+                if (!res.ok) {
+                    throw new Error("Failed to update names");
+                }
 
+            } catch (error) {
+                console.error("Error updating names:", error);
+            }
+        })();
+    
         setInputName("");
     }
 
