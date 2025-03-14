@@ -21,6 +21,13 @@ export function Choose({theme, setTheme, lastTheme}) {
           } catch (error) {
             console.error("Error fetching user data:", error);
           }
+
+          const namesRes = await fetch('/api/names');
+          if (!namesRes.ok) {
+              throw new Error("Failed to fetch names");
+          }
+          const namesData = await namesRes.json();
+          setNames(namesData.listNames || []);
         })();
       }, []);
 
