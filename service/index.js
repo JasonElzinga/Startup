@@ -17,6 +17,23 @@ app.use(`/api`, apiRouter);
 const users = [];
 let listNames = [];
 
+const { MongoClient } = require('mongodb');
+const config = require('./dbConfig.json');
+
+const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
+
+const client = new MongoClient(url);
+const db = client.db('rental');
+const collection = db.collection('house');
+
+try {
+  await db.command({ ping: 1 });
+  console.log(`DB connected to ${config.hostname}`);
+} catch (ex) {
+  console.log(`Error with ${url} because ${ex.message}`);
+  process.exit(1);
+}
+
 
 // get the list of choosen names to display in /choose.jsx
 apiRouter.get('/names', async (req, res) => {
