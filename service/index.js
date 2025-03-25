@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const uuid = require('uuid');
 const bcrypt = require('bcryptjs');
 const DB = require('./database.js');
+const { getTheme, updateTheme } = require('./database');
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
@@ -18,7 +19,7 @@ app.use(`/api`, apiRouter);
 const authCookieName = 'token'
 
 //const users = [];
-//let listNames = [];
+let listNames = [];
 
 // get the list of choosen names to display in /choose.jsx
 apiRouter.get('/names', async (req, res) => {
@@ -46,30 +47,66 @@ apiRouter.post('/updateNames', async (req, res) => {
 });
 
 
-// get user's theme
 apiRouter.get('/theme', async (req, res) => {
-    const token = req.cookies['token'];
-    const user = await findUser('token', token);
-
-    if (user) {
-        res.send({ theme: user.theme });
-    } else {
-        res.status(401).send({ msg: 'Unauthorized' });
-    }
+  try {
+    const themeData = await getTheme();
+    res.send({ theme: themeData ? themeData.theme : 'First Time!' });
+  } catch (error) {
+    console.error("Error fetching theme:", error);
+    res.status(500).send({ msg: 'Internal Server Error' });
+  }
 });
-  
-// update theme for the players and the overall theme
+
+// Update theme for the user in the database
 apiRouter.post('/updateTheme', async (req, res) => {
-    const token = req.cookies['token'];
-    const user = await findUser('token', token);
-    
-    if (user && req.body.theme) {
-        user.theme = req.body.theme;
-        console.log("Bob")
-        res.send({ msg: 'Theme updated', theme: user.theme });
-    } else {
-        res.status(400).send({ msg: 'Invalid request' });
+  try {
+    if (!req.body.theme) {
+      return res.status(400).send({ msg: 'Invalid request' });
     }
+
+    // Update the theme in the 'choosenTheme' collection
+    await updateTheme(req.body.theme);
+
+    // Fetch the updated theme from the 'choosenTheme' collection
+    const currentTheme = await getTheme();  // Assuming getTheme returns the current theme
+
+    if (!currentTheme || !currentTheme.theme) {
+      return res.status(500).send({ msg: 'Current theme not found' });
+    }
+
+    // Update all users' theme in the 'userCollection'
+    await userCollection.updateMany({}, { $set: { theme: currentTheme.theme } });
+
+    res.send({ msg: 'Theme updated for all users', theme: currentTheme.theme });
+  } catch (error) {
+    console.error("Error updating theme:", error);
+    res.status(500).send({ msg: 'Internal Server Error' });
+  }
+});
+
+apiRouter.get('/usertheme', async (req, res) => {
+  try {
+    // Get the token from the cookies (assuming it's set in the cookies)
+    const token = req.cookies['token'];
+
+    // If no token is found, return unauthorized error
+    if (!token) {
+      return res.status(401).send({ msg: 'Unauthorized' });
+    }
+
+    // Find the user by token
+    const user = await getUserByToken(token);
+
+    if (!user) {
+      return res.status(401).send({ msg: 'User not found' });
+    }
+
+    // Return the user's theme
+    res.send({ theme: user.theme || 'First Time!' });
+  } catch (error) {
+    console.error("Error fetching user theme:", error);
+    res.status(500).send({ msg: 'Internal Server Error' });
+  }
 });
 
 // create account
@@ -120,20 +157,34 @@ apiRouter.delete('/auth/logout', async (req, res) => {
   res.status(204).end();
 });
 
-// // getme
-// apiRouter.get('/user/me', async (req, res) => {
-//   const token = req.cookies['token'];
-//   console.log("Token from cookie:", token); // Log token
-//   const user = await findUser('token', token);
+// getme
+apiRouter.get('/user/me', async (req, res) => {
+  try {
+    const token = req.cookies[authCookieName]; // Get token from cookies
+    console.log("Token from cookie:", token); // Log token
 
-//   if (user) {
-//     console.log("Found user:", user); // Log found user
-//     res.send({ username: user.username });
-//   } else {
-//     console.log("User not found");
-//     res.status(401).send({ msg: 'Unauthorized' });
-//   }
-// });
+    if (!token) {
+      console.log("No token found");
+      return res.status(401).send({ msg: 'Unauthorized' });
+    }
+
+    // Fetch the user from the database using the token
+    const user = await DB.getUserByToken(token); 
+
+    if (user) {
+      console.log("Found user:", user); // Log found user
+      res.send({ username: user.username });
+    } else {
+      console.log("User not found");
+      res.status(401).send({ msg: 'Unauthorized' });
+    }
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    res.status(500).send({ msg: 'Server error' });
+  }
+});
+
+
 
 // Middleware to verify that the user is authorized to call an endpoint
 const verifyAuth = async (req, res, next) => {
@@ -175,6 +226,7 @@ function setAuthCookie(res, authToken) {
     httpOnly: true,
     sameSite: 'strict',
   });
+  
 }
 
 // function clearAuthCookie(res, user) {

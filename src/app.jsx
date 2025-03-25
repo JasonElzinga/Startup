@@ -13,6 +13,8 @@ export default function App() {
     const [user, setUser] = React.useState(localStorage.getItem('user') || null);
     const [lastTheme, setLastTheme] = React.useState(localStorage.getItem('lastTheme') || "First Game!");
     const [theme, setTheme] = React.useState(localStorage.getItem('theme') || "Famous People");
+
+    const [token, setToken] = React.useState(localStorage.getItem('token') || "")
     //const navigate = useNavigate();
 
     React.useEffect(() => {

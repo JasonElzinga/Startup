@@ -6,6 +6,7 @@ const client = new MongoClient(url);
 const db = client.db('startup');
 const userCollection = db.collection('user');
 const scoreCollection = db.collection('nameList');
+const themeCollection = db.collection('choosenTheme');
 
 // This will asynchronously test the connection and exit the process if it fails
 (async function testConnection() {
@@ -34,6 +35,18 @@ async function updateUser(user) {
   await userCollection.updateOne({ username: user.username }, { $set: user });
 }
 
+async function updateTheme(theme) {
+  await themeCollection.updateOne(
+    {}, // No filter, since we're storing a single theme document
+    { $set: { theme: theme } }, // Update the theme
+    { upsert: true } // Create the document if it doesn't exist
+  );
+}
+
+async function getTheme() {
+  return await themeCollection.findOne({}); // Get the single theme document
+}
+
 // async function addScore(score) {
 //   return scoreCollection.insertOne(score);
 // }
@@ -53,6 +66,8 @@ module.exports = {
   getUserByToken,
   addUser,
   updateUser,
+  updateTheme,
+  getTheme,
 //   addScore,
 //   getHighScores,
 };
