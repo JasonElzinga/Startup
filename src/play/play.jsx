@@ -13,20 +13,29 @@ export function Play({user, setUser, lastTheme, setLastTheme}) {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch('/api/user/me');
-        if (!res.ok) throw new Error("Failed to fetch user");
-        
+        console.log("Boo")
+        // Check if user is authenticated by verifying the token
+        //const token = document.cookie.split('=')[1]; // Assuming token is stored in a cookie named 'token'
+
+        const res = await fetch('/api/auth', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ token })
+        });
+
+        if (!res.ok) throw new Error('Failed to authenticate');
+        console.log("Hello")
         const data = await res.json();
         setUserInfo(data);
-        setUser(data.username)
+        setUser(data.username);
 
+        // Fetch the current theme
         const themeRes = await fetch('/api/theme');
         const themeData = await themeRes.json();
-        setLastTheme(themeData.theme || "First Time!");
-
-
+        setLastTheme(themeData.theme || 'First Time!');
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error('Error fetching user data:', error);
       }
     })();
   }, []);

@@ -20,6 +20,7 @@ export default function App() {
         setLastTheme(lastTheme);
         localStorage.setItem('lastTheme', lastTheme); 
     }, [theme]);
+    
 
     function LogoutButton({ setUser, navigate }) {
         const handleLogout = async () => {
@@ -33,7 +34,6 @@ export default function App() {
                     console.log('User logged out');
                     setUser(null); // Clear user state on logout
                     localStorage.removeItem('user');
-                    //navigate('/'); // Navigate to login page after successful logout
                 } else {
                     console.error('Failed to log out');
                 }
