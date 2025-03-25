@@ -4,7 +4,8 @@ const cookieParser = require('cookie-parser');
 const uuid = require('uuid');
 const bcrypt = require('bcryptjs');
 const DB = require('./database.js');
-const { getTheme, updateTheme } = require('./database');
+const { getTheme, updateTheme } = require('./database'); // Destructure the userCollection
+
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
@@ -75,7 +76,7 @@ apiRouter.post('/updateTheme', async (req, res) => {
     }
 
     // Update all users' theme in the 'userCollection'
-    await userCollection.updateMany({}, { $set: { theme: currentTheme.theme } });
+    DB.updateThemes(currentTheme);
 
     res.send({ msg: 'Theme updated for all users', theme: currentTheme.theme });
   } catch (error) {
@@ -84,24 +85,29 @@ apiRouter.post('/updateTheme', async (req, res) => {
   }
 });
 
+// get user theme
 apiRouter.get('/usertheme', async (req, res) => {
   try {
-    // Get the token from the cookies (assuming it's set in the cookies)
-    const token = req.cookies['token'];
+    const token = req.cookies[authCookieName]; // Get token from cookies
+    console.log("Token from cookie:", token); // Log token
 
-    // If no token is found, return unauthorized error
     if (!token) {
+      console.log("No token found");
       return res.status(401).send({ msg: 'Unauthorized' });
     }
 
-    // Find the user by token
-    const user = await getUserByToken(token);
+    // Fetch the user from the database using the token
+    const user = await DB.getUserByToken(token);
 
     if (!user) {
-      return res.status(401).send({ msg: 'User not found' });
+      console.log("User not found");
+      return res.status(401).send({ msg: 'Unauthorized' });
     }
 
-    // Return the user's theme
+    // Log found user and theme
+    console.log("Found user:", user);
+    
+    // Return the user's theme or default to 'First Time!' if no theme is set
     res.send({ theme: user.theme || 'First Time!' });
   } catch (error) {
     console.error("Error fetching user theme:", error);
@@ -203,6 +209,7 @@ async function createUser(username, password) {
   const user = {
     username: username,
     password: passwordHash,
+    theme: "First Time!",
     token: uuid.v4(),
   };
   await DB.addUser(user);

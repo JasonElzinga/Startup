@@ -17,8 +17,10 @@ export function Play({user, setUser, lastTheme, setLastTheme}) {
         if (!res.ok) throw new Error("Failed to fetch user");
   
         const data = await res.json();
-        setUserInfo(data);
+        
         setUser(data.username);
+        setUserInfo(data);
+        
   
         // Fetch user theme
         const themeRes = await fetch('/api/usertheme', { credentials: 'include' });
@@ -29,6 +31,7 @@ export function Play({user, setUser, lastTheme, setLastTheme}) {
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
+      
     })();
   }, []);
 

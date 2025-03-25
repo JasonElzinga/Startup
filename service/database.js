@@ -47,6 +47,11 @@ async function getTheme() {
   return await themeCollection.findOne({}); // Get the single theme document
 }
 
+
+async function updateThemes(currentTheme) {
+  await userCollection.updateMany({}, { $set: { theme: currentTheme.theme } });
+}
+
 // async function addScore(score) {
 //   return scoreCollection.insertOne(score);
 // }
@@ -68,6 +73,5 @@ module.exports = {
   updateUser,
   updateTheme,
   getTheme,
-//   addScore,
-//   getHighScores,
+  updateThemes,
 };
