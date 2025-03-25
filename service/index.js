@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
 const cookieParser = require('cookie-parser');
-const uuid = require('uuid');
-const bcrypt = require('bcryptjs');
+const uuid = require('node_modules/uuid');
+const bcrypt = require('../node_modules/node_modules/bcryptjs/umd/index.js');
 const DB = require('./database.js');
 const { getTheme, updateTheme } = require('./database'); 
 
