@@ -118,7 +118,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 - [X] **User registration** - Yes, you can register and in the service/database.js file is where it stores the data in the database.
 - [X] **User login and logout** - Yes, I did this! 
-- [X] **Stores data in MongoDB** - Yes, it stores the last theme of each user, and the current choosen theme, and also the inserted names.
+- [X] **Stores data in MongoDB** - Yes, it stores the last theme of each user, and the current choosen theme, and also the inserted names in the choose.jsx.
 - [X] **Stores credentials in MongoDB** - Yes it stores their credentials in MondgoDB.
 - [X] **Restricts functionality based on authentication** - Yes you have to be authorized to play the game and also to do anything on the app.
 
