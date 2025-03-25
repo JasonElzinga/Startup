@@ -116,11 +116,11 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **User registration** - I did not complete this part of the deliverable.
-- [ ] **User login and logout** - I did not complete this part of the deliverable.
-- [ ] **Stores data in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Stores credentials in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Restricts functionality based on authentication** - I did not complete this part of the deliverable.
+- [X] **User registration** - Yes, you can register and in the service/database.js file is where it stores the data in the database.
+- [X] **User login and logout** - Yes, I did this! 
+- [X] **Stores data in MongoDB** - Yes, it stores the last theme of each user, and the current choosen theme, and also the inserted names.
+- [X] **Stores credentials in MongoDB** - Yes it stores their credentials in MondgoDB.
+- [X] **Restricts functionality based on authentication** - Yes you have to be authorized to play the game and also to do anything on the app.
 
 ## 🚀 WebSocket deliverable
 
