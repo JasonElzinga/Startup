@@ -29,12 +29,12 @@ export default function App() {
             try {
                 const response = await fetch('/api/auth', {
                     method: 'DELETE',
-                    credentials: 'include', // Include cookies (session or token)
+                    credentials: 'include', 
                 });
     
                 if (response.ok) {
                     console.log('User logged out');
-                    setUser(null); // Clear user state on logout
+                    setUser(null); 
                     localStorage.removeItem('user');
                 } else {
                     console.error('Failed to log out');

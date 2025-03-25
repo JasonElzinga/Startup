@@ -7,6 +7,7 @@ const db = client.db('startup');
 const userCollection = db.collection('user');
 const scoreCollection = db.collection('nameList');
 const themeCollection = db.collection('choosenTheme');
+const nameList = db.collection('listNames');
 
 // This will asynchronously test the connection and exit the process if it fails
 (async function testConnection() {
@@ -27,6 +28,17 @@ async function getUserByToken(token) {
   return userCollection.findOne({ token: token });
 }
 
+async function deleteAllNameLists() {
+  try {
+    // Assuming there should only be one document in 'listNames' collection
+    const result = await nameList.deleteMany({});
+    console.log('Successfully deleted all name lists from the collection');
+  } catch (error) {
+    console.error('Error deleting all name lists:', error);
+    throw new Error('Failed to delete all name lists');
+  }
+}
+
 async function addUser(user) {
   await userCollection.insertOne(user);
 }
@@ -37,34 +49,58 @@ async function updateUser(user) {
 
 async function updateTheme(theme) {
   await themeCollection.updateOne(
-    {}, // No filter, since we're storing a single theme document
-    { $set: { theme: theme } }, // Update the theme
-    { upsert: true } // Create the document if it doesn't exist
+    {}, 
+    { $set: { theme: theme } }, 
+    { upsert: true } 
   );
 }
 
 async function getTheme() {
-  return await themeCollection.findOne({}); // Get the single theme document
+  return await themeCollection.findOne({}); 
 }
-
 
 async function updateThemes(currentTheme) {
   await userCollection.updateMany({}, { $set: { theme: currentTheme.theme } });
 }
 
-// async function addScore(score) {
-//   return scoreCollection.insertOne(score);
-// }
+async function getNameList() {
+  try {
+    const nameDoc = await nameList.findOne({});
 
-// function getHighScores() {
-//   const query = { score: { $gt: 0, $lt: 900 } };
-//   const options = {
-//     sort: { score: -1 },
-//     limit: 10,
-//   };
-//   const cursor = scoreCollection.find(query, options);
-//   return cursor.toArray();
-// }
+    if (nameDoc && nameDoc.names) {
+      return nameDoc.names; 
+    } else {
+      return []; 
+    }
+  } catch (error) {
+    console.error('Error fetching name list:', error);
+    throw new Error('Failed to fetch name list');
+  }
+}
+
+
+async function updateNameList(newName) {
+  try {
+    const nameDoc = await nameList.findOne({});
+
+    if (nameDoc) {
+      await nameList.updateOne(
+        {},
+        { $push: { names: newName } }  
+      );
+    } else {
+      await nameList.insertOne({
+        names: [newName],  
+      });
+    }
+
+    console.log(`Name '${newName}' added`);
+  } catch (error) {
+    console.error('Error updating name list:', error);
+    throw new Error('Failed to update name list');
+  }
+}
+
 
 module.exports = {
   getUser,
@@ -74,4 +110,7 @@ module.exports = {
   updateTheme,
   getTheme,
   updateThemes,
+  updateNameList,
+  getNameList,
+  deleteAllNameLists,
 };

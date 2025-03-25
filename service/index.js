@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 const uuid = require('uuid');
 const bcrypt = require('bcryptjs');
 const DB = require('./database.js');
-const { getTheme, updateTheme } = require('./database'); // Destructure the userCollection
+const { getTheme, updateTheme } = require('./database'); 
 
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
@@ -19,31 +19,57 @@ app.use(`/api`, apiRouter);
 
 const authCookieName = 'token'
 
-//const users = [];
-let listNames = [];
 
-// get the list of choosen names to display in /choose.jsx
+// Fetch the list of chosen names from the database
 apiRouter.get('/names', async (req, res) => {
-  const token = req.cookies['token'];
-  const user = await findUser('token', token);
+  try {
+    const token = req.cookies['token'];
+    const user = await DB.findUser('token', token);  
 
-  if (user) {
-      res.send({ listNames });
-  } else {
+    if (user) {
+      const themeDoc = await DB.getThemeByUserToken(token);  
+
+      if (themeDoc && themeDoc.names) {
+        res.send({ listNames: themeDoc.names });
+      } else {
+        res.send({ listNames: [] }); 
+      }
+    } else {
       res.status(401).send({ msg: 'Unauthorized' });
+    }
+  } catch (error) {
+    console.error('Error fetching names:', error);
+    res.status(500).send({ msg: 'Server error' });
   }
 });
 
-// update list of choosen names
+// Update the list of chosen names in the database
 apiRouter.post('/updateNames', async (req, res) => {
-  const token = req.cookies['token'];
-  const user = await findUser('token', token);
-  
-  if (user && req.body.listNames) {
-      listNames = [...listNames, ...req.body.listNames];
-      res.send({ msg: 'List of Names updated', listNames });
-  } else {
-      res.status(400).send({ msg: 'Invalid request' });
+  try {
+    const token = req.cookies['token'];
+    const user = await findUser('token', token); 
+
+    if (user && req.body.newName) {  
+      const newName = req.body.newName;  
+      await DB.updateNameList(newName);  
+      res.send({ msg: 'Name updated successfully' });
+    } else {
+      res.status(400).send({ msg: 'Invalid request, name is required' });
+    }
+  } catch (error) {
+    console.error('Error updating names:', error);
+    res.status(500).send({ msg: 'Server error' });
+  }
+});
+
+apiRouter.post('/deleteNames', async (req, res) => {
+  try {
+    await DB.deleteAllNameLists();
+
+    res.send({ msg: 'All name lists deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting name lists:', error);
+    res.status(500).send({ msg: 'Failed to delete all name lists' });
   }
 });
 
@@ -65,17 +91,14 @@ apiRouter.post('/updateTheme', async (req, res) => {
       return res.status(400).send({ msg: 'Invalid request' });
     }
 
-    // Update the theme in the 'choosenTheme' collection
     await updateTheme(req.body.theme);
 
-    // Fetch the updated theme from the 'choosenTheme' collection
-    const currentTheme = await getTheme();  // Assuming getTheme returns the current theme
+    const currentTheme = await getTheme();  
 
     if (!currentTheme || !currentTheme.theme) {
       return res.status(500).send({ msg: 'Current theme not found' });
     }
 
-    // Update all users' theme in the 'userCollection'
     DB.updateThemes(currentTheme);
 
     res.send({ msg: 'Theme updated for all users', theme: currentTheme.theme });
@@ -88,8 +111,8 @@ apiRouter.post('/updateTheme', async (req, res) => {
 // get user theme
 apiRouter.get('/usertheme', async (req, res) => {
   try {
-    const token = req.cookies[authCookieName]; // Get token from cookies
-    console.log("Token from cookie:", token); // Log token
+    const token = req.cookies[authCookieName]; 
+    console.log("Token from cookie:", token); 
 
     if (!token) {
       console.log("No token found");
@@ -127,17 +150,8 @@ apiRouter.post('/auth', async (req, res) => {
   }
 });
 
-//login
-//apiRouter.put('/auth', async (req, res) => {
-  // const user = await findUser('username', req.body.username);
-  // if (user && (await bcrypt.compare(req.body.password, user.password))) {
-  //   setAuthCookie(res, user);
 
-  //   res.send({ username: user.username });
-  // } else {
-  //   res.status(401).send({ msg: 'Unauthorized' });
-  // }
-  apiRouter.put('/auth', async (req, res) => {
+apiRouter.put('/auth', async (req, res) => {
     const user = await findUser('username', req.body.username);
     if (user) {
       if (await bcrypt.compare(req.body.password, user.password)) {
@@ -166,19 +180,17 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 // getme
 apiRouter.get('/user/me', async (req, res) => {
   try {
-    const token = req.cookies[authCookieName]; // Get token from cookies
-    console.log("Token from cookie:", token); // Log token
-
+    const token = req.cookies[authCookieName]; 
+    console.log("Token from cookie:", token);
     if (!token) {
       console.log("No token found");
       return res.status(401).send({ msg: 'Unauthorized' });
     }
 
-    // Fetch the user from the database using the token
     const user = await DB.getUserByToken(token); 
 
     if (user) {
-      console.log("Found user:", user); // Log found user
+      console.log("Found user:", user); 
       res.send({ username: user.username });
     } else {
       console.log("User not found");
@@ -201,7 +213,6 @@ const verifyAuth = async (req, res, next) => {
     res.status(401).send({ msg: 'Unauthorized' });
   }
 };
-
 
 async function createUser(username, password) {
   const passwordHash = await bcrypt.hash(password, 10);
@@ -235,23 +246,6 @@ function setAuthCookie(res, authToken) {
   });
   
 }
-
-// function clearAuthCookie(res, user) {
-//   delete user.token;
-//   res.clearCookie('token');
-// }
-
-// const path = require('path');
-
-// app.use(express.static(path.join(__dirname, 'public')));
-
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'public', 'index.html'));
-// });
-
-// app.listen(port, function () {
-//   console.log(`Listening on port ${port}`);
-// });
 
 const httpService = app.listen(port, () => {
   console.log(`Listening on port ${port}`);

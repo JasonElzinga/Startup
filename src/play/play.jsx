@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './play.css';
-// import 'index.js';
 
 export function Play({user, setUser, lastTheme, setLastTheme}) {
   const navigate = useNavigate();
 
-  //const [index, setIndex] = React.useState(0);
   const [userInfo, setUserInfo] = React.useState('');
 
   useEffect(() => {
@@ -78,9 +76,7 @@ export function Play({user, setUser, lastTheme, setLastTheme}) {
   }, []);
 
   async function handleReadyButton() {
-    // localStorage.setItem("theme", choosenTheme);
     setLastTheme(choosenTheme);
-    // localStorage.setItem("lastTheme", choosenTheme);
 
     try {
       const res = await fetch('/api/updateTheme', {
@@ -94,9 +90,14 @@ export function Play({user, setUser, lastTheme, setLastTheme}) {
     } catch (error) {
       console.error("Error updating theme:", error);
     }
-
     navigate('/choose');
   }
+
+  useEffect(() => {
+    if (lastTheme) {
+      setChoosenTheme(lastTheme);  
+    }
+  }, [lastTheme]); 
     
 
   return (
