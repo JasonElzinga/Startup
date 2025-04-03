@@ -150,13 +150,14 @@ apiRouter.post('/auth', async (req, res) => {
   }
 });
 
-
+// login
 apiRouter.put('/auth', async (req, res) => {
     const user = await findUser('username', req.body.username);
     if (user) {
       if (await bcrypt.compare(req.body.password, user.password)) {
         user.token = uuid.v4();
         await DB.updateUser(user);
+        await DB.setCurrentPlayerState(user, true);
         setAuthCookie(res, user.token);
         res.send({ username: user.username });
         return;
@@ -170,8 +171,9 @@ apiRouter.put('/auth', async (req, res) => {
 apiRouter.delete('/auth/logout', async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
-    delete user.token;
-    DB.updateUser(user);
+    user.token = null;
+    await DB.updateUser(user);
+    await DB.setCurrentPlayerState(user, false);
   }
   res.clearCookie(authCookieName);
   res.status(204).end();
@@ -203,7 +205,6 @@ apiRouter.get('/user/me', async (req, res) => {
 });
 
 
-
 // Middleware to verify that the user is authorized to call an endpoint
 const verifyAuth = async (req, res, next) => {
   const user = await findUser('token', req.cookies[authCookieName]);
@@ -222,6 +223,7 @@ async function createUser(username, password) {
     password: passwordHash,
     theme: "First Time!",
     token: uuid.v4(),
+    currentPlayer: true,
   };
   await DB.addUser(user);
 

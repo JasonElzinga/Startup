@@ -46,6 +46,11 @@ async function updateUser(user) {
   await userCollection.updateOne({ username: user.username }, { $set: user });
 }
 
+async function setCurrentPlayerState(user, state) {
+  await userCollection.updateOne({username: user.username}, { $set: { currentPlayer: state } })
+}
+
+
 async function updateTheme(theme) {
   await themeCollection.updateOne(
     {}, 
@@ -112,4 +117,5 @@ module.exports = {
   updateNameList,
   getNameList,
   deleteAllNameLists,
+  setCurrentPlayerState,
 };

@@ -14,7 +14,7 @@ export default function App() {
     const [lastTheme, setLastTheme] = React.useState(localStorage.getItem('lastTheme') || "First Game!");
     const [theme, setTheme] = React.useState(localStorage.getItem('theme') || "Famous People");
 
-    const [token, setToken] = React.useState(localStorage.getItem('token') || "")
+    //const [token, setToken] = React.useState(localStorage.getItem('token') || "")
     //const navigate = useNavigate();
 
     React.useEffect(() => {
@@ -25,9 +25,12 @@ export default function App() {
     
 
     function LogoutButton({ setUser, navigate }) {
+        const navigates = useNavigate();
+
+
         const handleLogout = async () => {
             try {
-                const response = await fetch('/api/auth', {
+                const response = await fetch('/api/auth/logout', {
                     method: 'DELETE',
                     credentials: 'include', 
                 });
@@ -36,6 +39,8 @@ export default function App() {
                     console.log('User logged out');
                     setUser(null); 
                     localStorage.removeItem('user');
+                    navigates('/')
+
                 } else {
                     console.error('Failed to log out');
                 }
@@ -62,7 +67,7 @@ export default function App() {
                                 <span>The Name Game!</span>
                             </div>
                             <div className="nav-item">
-                                {user && <NavLink className="nav-link" to="/">Logout</NavLink>}
+                                {user && <LogoutButton setUser={setUser} />}
                                 {!user && <NavLink className="nav-link" to="/">Login</NavLink>}
                                 {user && <NavLink className="nav-link" to="/play">Play</NavLink>}
                                 <NavLink className="nav-link" to="/about">About</NavLink>
