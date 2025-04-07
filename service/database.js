@@ -50,6 +50,23 @@ async function setCurrentPlayerState(user, state) {
   await userCollection.updateOne({username: user.username}, { $set: { currentPlayer: state } })
 }
 
+async function sendCurrentPlayerList(currentUser) {
+  try {
+    const currentPlayers = await userCollection.find({ 
+      currentPlayer: true,
+      username: { $ne: currentUser } // Exclude the current user
+    }).toArray();  
+
+    return currentPlayers.map(user => ({
+      username: user.username,
+      theme: user.theme,
+      id: user._id
+    }));  
+  } catch (error) {
+    console.error("Error fetching current players:", error);
+    return [];
+  }
+}
 
 async function updateTheme(theme) {
   await themeCollection.updateOne(
@@ -118,4 +135,5 @@ module.exports = {
   getNameList,
   deleteAllNameLists,
   setCurrentPlayerState,
+  sendCurrentPlayerList,
 };

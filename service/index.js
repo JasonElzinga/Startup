@@ -179,6 +179,19 @@ apiRouter.delete('/auth/logout', async (req, res) => {
   res.status(204).end();
 });
 
+apiRouter.get('/currentPlayers', async (req, res) => {
+  try {
+    const currentUser = req.query.user;
+    const currentPlayers = await DB.sendCurrentPlayerList(currentUser);  
+
+    console.log("Players: ", {players: currentPlayers});
+    res.send({ players: currentPlayers });
+  } catch (error) {
+    console.error("Error fetching current players:", error);
+    res.status(500).send({ msg: 'Internal Server Error' });
+  }
+});
+
 // getme
 apiRouter.get('/user/me', async (req, res) => {
   try {
@@ -229,6 +242,7 @@ async function createUser(username, password) {
 
   return user;
 }
+
 
 async function findUser(field, value) {
   if (!value) return null;
