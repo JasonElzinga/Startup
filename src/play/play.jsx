@@ -35,23 +35,32 @@ export function Play({user, setUser, lastTheme, setLastTheme}) {
 
 
   const [players, setPlayers] = useState([]);
-  const themes = ["Movies", "Sports", "History", "Music", "Science"];
   const [choosenTheme, setChoosenTheme] = React.useState("Famous People");
 
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      const fakeNames = ['Toby', 'Paul', 'Ashley', 'Jason', 'Samantha', 'Chris'];
+    const fetchCurrentPlayers = async () => {
+      if (!user) return; 
   
-      const randomPlayer = {
-        name: fakeNames[Math.floor(Math.random() * fakeNames.length)],
-        theme: themes[Math.floor(Math.random() * themes.length)]
-      };
+      try {
+        const res = await fetch(`/api/currentPlayers?user=${encodeURIComponent(user)}`, {
+          credentials: 'include'
+        });
+        if (!res.ok) throw new Error("Failed to fetch current players");
   
-      setPlayers(prevPlayers => [...prevPlayers, randomPlayer]);
-    }, 10000);
+        const data = await res.json();
+        setPlayers(data.players); 
+  
+      } catch (error) {
+        console.error("Error fetching current players:", error);
+      }
+    };
+  
+    fetchCurrentPlayers();
+    const interval = setInterval(fetchCurrentPlayers, 10000); 
   
     return () => clearInterval(interval);
-  }, []);
+  }, []); 
 
 
   function changeChoosenTheme(e) {
@@ -123,7 +132,7 @@ export function Play({user, setUser, lastTheme, setLastTheme}) {
               </tr>
               {players.map((player, index) => (
                 <tr key={index}>
-                  <td>{player.name}</td>
+                  <td>{player.username}</td>
                   <td>{player.theme}</td>
                 </tr>
               ))}
