@@ -126,8 +126,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Backend listens for WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Frontend makes WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Data sent over WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **WebSocket data displayed** - I did not complete this part of the deliverable.
-- [ ] **Application is fully functional** - I did not complete this part of the deliverable.
+- [X] **Backend listens for WebSocket connection** - Yes I implemented this. It checks for their connection to allow for the players list on the play.jsx to update when they login and logout.
+- [X] **Frontend makes WebSocket connection** - Yes when they login in it sends a message to the backend.
+- [X] **Data sent over WebSocket connection** - Yes it allows for either the player list to update or to switch the page to the choose.jsx file when they click the click when everyone is ready button.
+- [X] **WebSocket data displayed** - Yes the player list is displayed!
+- [X] **Application is fully functional** - Yes it all works! It doesn't automatically update the list on purpose to allow for secrecy in the game. The game only works when everyone is in person so a little communication will be needed but that is intended so when somoene adds a name people don't know who did it.
