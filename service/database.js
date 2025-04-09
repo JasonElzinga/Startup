@@ -81,7 +81,10 @@ async function getTheme() {
 }
 
 async function updateThemes(currentTheme) {
-  await userCollection.updateMany({}, { $set: { theme: currentTheme.theme } });
+  await userCollection.updateMany(
+    { currentPlayer: true }, // Only update users where currentPlayer is true
+    { $set: { theme: currentTheme.theme } }
+  );
 }
 
 async function getNameList() {

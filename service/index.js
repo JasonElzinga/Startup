@@ -5,7 +5,7 @@ const uuid = require('uuid');
 const app = express();
 const DB = require('./database.js');
 const { getTheme, updateTheme } = require('./database'); 
-
+const { peerProxy } = require('./peerProxy.js');
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
@@ -18,6 +18,13 @@ var apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
 const authCookieName = 'token'
+
+const httpService = app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
+});
+
+const wss = peerProxy(httpService)
+console.log('WebSocket server initialized:', wss);
 
 
 // Fetch the list of chosen names from the database
@@ -146,6 +153,8 @@ apiRouter.post('/auth', async (req, res) => {
     const user = await createUser(req.body.username, req.body.password);
     setAuthCookie(res, user.token);
 
+    wss.broadcast({ type: 'playerUpdate' });
+
     res.send({ username: user.username });
   }
 });
@@ -159,6 +168,9 @@ apiRouter.put('/auth', async (req, res) => {
         await DB.updateUser(user);
         await DB.setCurrentPlayerState(user, true);
         setAuthCookie(res, user.token);
+
+        wss.broadcast({ type: 'playerUpdate' });
+
         res.send({ username: user.username });
         return;
       }
@@ -174,6 +186,8 @@ apiRouter.delete('/auth/logout', async (req, res) => {
     user.token = null;
     await DB.updateUser(user);
     await DB.setCurrentPlayerState(user, false);
+
+    wss.broadcast({ type: 'playerUpdate' });
   }
   res.clearCookie(authCookieName);
   res.status(204).end();
@@ -183,7 +197,6 @@ apiRouter.get('/currentPlayers', async (req, res) => {
   try {
     const currentUser = req.query.user;
     const currentPlayers = await DB.sendCurrentPlayerList(currentUser);  
-
     console.log("Players: ", {players: currentPlayers});
     res.send({ players: currentPlayers });
   } catch (error) {
@@ -263,6 +276,6 @@ function setAuthCookie(res, authToken) {
   
 }
 
-const httpService = app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
-});
+
+
+

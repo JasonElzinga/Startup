@@ -33,34 +33,56 @@ export function Play({user, setUser, lastTheme, setLastTheme}) {
     })();
   }, []);
 
+  const fetchCurrentPlayers = async () => {
+    if (!user) {
+      console.log("User not set, skipping fetchCurrentPlayers");
+      return;
+    }
+  
+    try {
+      console.log("Fetching current players for:", user);
+      const res = await fetch(`/api/currentPlayers?user=${encodeURIComponent(user)}`, {
+        credentials: 'include'
+      });
+  
+      if (!res.ok) throw new Error("Failed to fetch current players");
+      const data = await res.json();
+      setPlayers(data.players);
+    } catch (error) {
+      console.error("Error fetching current players:", error);
+    }
+  };
+
+  useEffect(() => {
+    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    const socket = new WebSocket(`${protocol}://${window.location.host}`);
+    
+    console.log('why')
+    socket.onmessage = (event) => {
+      console.log("Working")
+      const message = JSON.parse(event.data);
+      if (message.type === 'playerUpdate') {
+        fetchCurrentPlayers();  // reload player list
+      }
+    };
+  
+    return () => {
+      socket.close();
+    };
+  }, []);
+
 
   const [players, setPlayers] = useState([]);
   const [choosenTheme, setChoosenTheme] = React.useState("Famous People");
 
 
-  useEffect(() => {
-    const fetchCurrentPlayers = async () => {
-      if (!user) return; 
-  
-      try {
-        const res = await fetch(`/api/currentPlayers?user=${encodeURIComponent(user)}`, {
-          credentials: 'include'
-        });
-        if (!res.ok) throw new Error("Failed to fetch current players");
-  
-        const data = await res.json();
-        setPlayers(data.players); 
-  
-      } catch (error) {
-        console.error("Error fetching current players:", error);
-      }
-    };
-  
-    fetchCurrentPlayers();
-    const interval = setInterval(fetchCurrentPlayers, 10000); 
-  
-    return () => clearInterval(interval);
-  }, []); 
+  // useEffect(() => {
+  //   if (user) {
+  //     fetchCurrentPlayers();
+  //     const interval = setInterval(fetchCurrentPlayers, 10000);
+  //     return () => clearInterval(interval);
+  //   }
+  // }, [user]); // Trigger ONLY when user is available
 
 
   function changeChoosenTheme(e) {
