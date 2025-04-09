@@ -7,7 +7,6 @@ export function Choose({ theme, setTheme, lastTheme }) {
   const [viewMessage, setViewMessage] = React.useState('Show List of Names to Everyone');
   const [inputName, setInputName] = React.useState('');
   const [names, setNames] = React.useState([]);
-  
 
   useEffect(() => {
     (async () => {
@@ -16,21 +15,18 @@ export function Choose({ theme, setTheme, lastTheme }) {
         if (!themeRes.ok) throw new Error('Failed to fetch theme');
         const themeData = await themeRes.json();
         setTheme(themeData.theme);
-        setNewTheme(themeData.theme);
-
 
         const namesRes = await fetch('/api/names');
         if (!namesRes.ok) throw new Error('Failed to fetch names');
         const namesData = await namesRes.json();
-        setNames(namesData.listNames || []);
+        setNames(namesData.names || []);  
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     })();
   }, [setTheme]);
 
-
-
+  // Toggle visibility of the name list and update view message
   const updateViewMessage = () => {
     if (viewMessage === 'Show List of Names to Everyone') {
       setViewMessage('Hide List of Names for Everyone');
@@ -39,15 +35,41 @@ export function Choose({ theme, setTheme, lastTheme }) {
     }
   };
 
-  const viewList = () => {
-    setShowList((prevState) => !prevState);
-    updateViewMessage();
+
+    const getListNames = async () => {
+      try {
+        const namesRes = await fetch('/api/names');
+        if (!namesRes.ok) {
+            setNames([]);
+        }
+        const namesData = await namesRes.json();
+        setNames(namesData || []);  
+        console.log("Here is the data", namesData);
+      } catch (error) {
+        console.error('Error fetching names:', error);
+      }
+    };
+
+
+  const viewList = async () => {
+    try {
+      setShowList((prevState) => !prevState);  
+
+      
+      getListNames()
+      updateViewMessage(); 
+    } catch (error) {
+      console.error('Error fetching names:', error);
+    }
   };
 
   const updateName = (e) => {
     setInputName(e.target.value);
     localStorage.setItem('name', e.target.value);
   };
+
+
+
 
   const updateListNamesHelper = async (newName) => {
     try {
@@ -56,28 +78,29 @@ export function Choose({ theme, setTheme, lastTheme }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ newName: newName }), 
       });
-  
+
       if (!res.ok) {
         throw new Error('Failed to update names');
       }
-  
+
       console.log('Name updated successfully');
     } catch (error) {
       console.error('Error updating names:', error);
     }
   };
 
+
   const addName = () => {
     const newName = inputName.trim();
-    if (!newName) return; 
+    if (!newName) return;
 
-    const updatedNames = [...names, { name: newName }];
-    setNames(updatedNames);
 
-    updateListNamesHelper(updatedNames);
-    setInputName('');
+    updateListNamesHelper(newName);  
+    setInputName('');  
+    getListNames();
   };
 
+  // Reset the game by clearing the names from the backend
   const restartGame = async () => {
     try {
       const res = await fetch('/api/deleteNames', {
@@ -86,42 +109,17 @@ export function Choose({ theme, setTheme, lastTheme }) {
           'Content-Type': 'application/json',
         },
       });
-  
+
       if (!res.ok) {
         throw new Error('Failed to delete names in the database');
       }
-  
-      setNames([]);
+
+      setNames([]);  
       console.log('Game restarted and names deleted from the database');
     } catch (error) {
       console.error('Error restarting the game:', error);
     }
   };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const names = [
-        'Bill Clinton', 'Leonardo DiCaprio', 'Oprah Winfrey', 'Barack Obama', 'Albert Einstein',
-        'Elon Musk', 'Beyoncé', 'Taylor Swift', 'Michael Jordan', 'Serena Williams',
-        'Morgan Freeman', 'Steve Jobs', 'Walt Disney', 'Marilyn Monroe',
-        'Tom Hanks', 'Emma Watson', 'David Bowie', 'Freddie Mercury', 'Keanu Reeves',
-        'Mark Zuckerberg', 'Jennifer Aniston', 'Dwayne Johnson', 'Gordon Ramsay',
-        'Shakira', 'Cristiano Ronaldo', 'LeBron James', 'Adele', 'Stephen King',
-        'J.K. Rowling', 'Vin Diesel', 'Kanye West', 'Lady Gaga', 'Will Smith',
-        'Zendaya', 'Bruno Mars', 'Harrison Ford', 'Johnny Depp', 'Angelina Jolie',
-        'Scarlett Johansson', 'Robert Downey Jr.', 'Meryl Streep', 'Cillian Murphy',
-        'Ryan Reynolds', 'Chris Hemsworth', 'Gal Gadot', 'Denzel Washington', 'Jim Carrey',
-      ];
-
-      const randomName = {
-        name: names[Math.floor(Math.random() * names.length)],
-      };
-
-      setNames((prevNames) => [...prevNames, randomName]);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <main>
@@ -160,11 +158,17 @@ export function Choose({ theme, setTheme, lastTheme }) {
         <div className="name-list-container p-4 shadow-lg">
           <h3>List of Names!</h3>
           <ul className="list-group">
-            {names.map((nameObj, index) => (
-              <li key={index} className="list-group-item d-flex align-items-center">
-                {nameObj.name}
+          {names.length > 0 ? (
+              names.map((name, index) => (
+                <li key={index} className="list-group-item d-flex align-items-center">
+                  {name}
+                </li>
+              ))
+            ) : (
+              <li className="list-group-item d-flex align-items-center text-center">
+                No names available
               </li>
-            ))}
+            )}
           </ul>
         </div>
       )}

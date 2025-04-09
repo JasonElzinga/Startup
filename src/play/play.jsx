@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { initSocket, getSocket } from '../socket';
 import './play.css';
 
 
@@ -52,48 +51,37 @@ export function Play({user, setUser, lastTheme, setLastTheme}) {
     })();
   }, []);
 
-  // React.useEffect(() => {
-  //   const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-  //   let port = window.location.port;
-  //   const socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
+  const [sockets, setSocket] = useState(null);
+
+  React.useEffect(() => {
+    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    let port = window.location.port;
+    const socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
+    setSocket(socket);
     
-  //   socket.onopen = () => {
-  //     socket.send({ type: 'playerUpdate' })
-  //   }
+    socket.onopen = () => {
+      socket.send({ type: 'playerUpdate' })
+    }
 
-  //   socket.onswitch = (event) => {
-  //     console.log("Working in onswitch")
-  //     const message = JSON.parse(event.data);
-  //     if (message.type === 'switchToChoose') {
-  //       navigate('/choose');
-  //     }
-  //   };
-
-  //   console.log('why')
-  //   socket.onmessage = (event) => {
-  //     console.log("Working")
-  //     const message = JSON.parse(event.data);
-  //     if (message.type === 'playerUpdate') {
-  //       fetchCurrentPlayers(user);  // reload player list
-  //     }
-  //   };
-  
-  //   return () => {
-  //     socket.close();
-  //   };
-  // }, [user]);
-
-  useEffect(() => {
-    const socket = initSocket((event) => {
+    socket.onmessage = (event) => {
+      console.log("Working")
       const message = JSON.parse(event.data);
       if (message.type === 'playerUpdate') {
-        fetchCurrentPlayers(user);
-      } else if (message.type === 'switchToChoose') {
+        fetchCurrentPlayers(user);  // reload player list
+      }
+      else if (message.type === 'switch') {
+        console.log("going to navigate");
         navigate('/choose');
       }
-    });
+      console.log("checked the messages");
+      console.log("here is the message type:", message.type)
+    };
   
+    return () => {
+      socket.close();
+    };
   }, [user]);
+
 
   const [players, setPlayers] = useState([]);
   const [choosenTheme, setChoosenTheme] = React.useState("Famous People");
@@ -122,8 +110,7 @@ export function Play({user, setUser, lastTheme, setLastTheme}) {
 
   async function handleReadyButton() {
     setLastTheme(choosenTheme);
-    const socket = getSocket();
-    socket.send({ type: 'playerUpdate' })
+    sockets.send(JSON.stringify({ type: 'switch' }));
 
     try {
       const res = await fetch('/api/updateTheme', {

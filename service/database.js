@@ -89,32 +89,33 @@ async function updateThemes(currentTheme) {
 
 async function getNameList() {
   try {
-    const nameDoc = await nameList.findOne({});
+    const nameDoc = await nameList.findOne({}); 
 
     if (nameDoc && nameDoc.names) {
-      return nameDoc.names; 
+      console.log(nameDoc);  // Corrected from 'NameDoc' to 'nameDoc'
+      console.log("Here is the nameDoc names: ", nameDoc.names);
+      return nameDoc.names;  // Return the names array if it exists
     } else {
-      return []; 
+      return [];  // Return an empty array if no names are found
     }
   } catch (error) {
     console.error('Error fetching name list:', error);
-    throw new Error('Failed to fetch name list');
+    throw new Error('Failed to fetch name list');  // Rethrow error with custom message
   }
 }
 
-
 async function updateNameList(newName) {
   try {
-    const nameDoc = await nameList.findOne({});
+    const nameDoc = await nameList.findOne({});  // Always access the first document
 
     if (nameDoc) {
       await nameList.updateOne(
-        {},
-        { $push: { names: newName } }  
+        {},  // No specific query, just update the first document
+        { $push: { names: newName } }  // Add the new name to the names array
       );
     } else {
       await nameList.insertOne({
-        names: [newName],  
+        names: [newName],  // Create the first document with a single name
       });
     }
 
@@ -139,4 +140,5 @@ module.exports = {
   deleteAllNameLists,
   setCurrentPlayerState,
   sendCurrentPlayerList,
+  getNameList
 };

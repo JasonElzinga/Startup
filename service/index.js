@@ -26,35 +26,27 @@ const httpService = app.listen(port, () => {
 const wss = peerProxy(httpService);
 
 
-//console.log('WebSocket server initialized:', wss);
 
-
-// Fetch the list of chosen names from the database
 apiRouter.get('/names', async (req, res) => {
   try {
-    const token = req.cookies['token'];
-    const user = await DB.findUser('token', token);  
+    const nameList = await DB.getNameList();  
 
-    if (user) {
-      const themeDoc = await DB.getThemeByUserToken(token);  
-
-      if (themeDoc && themeDoc.names) {
-        res.send({ listNames: themeDoc.names });
-      } else {
-        res.send({ listNames: [] }); 
-      }
+    if (nameList.length > 0) {
+      res.json(nameList); 
     } else {
-      res.status(401).send({ msg: 'Unauthorized' });
+      res.status(404).json({ msg: 'No names found' });  
     }
   } catch (error) {
-    console.error('Error fetching names:', error);
-    res.status(500).send({ msg: 'Server error' });
+    console.error('Error retrieving name list:', error);
+    res.status(500).json({ msg: 'Error fetching name list' }); 
   }
 });
+
 
 // Update the list of chosen names in the database
 apiRouter.post('/updateNames', async (req, res) => {
   try {
+    console.log("Received newName:", req.body.newName);
     const token = req.cookies['token'];
     const user = await findUser('token', token); 
 
