@@ -3,7 +3,6 @@ const { WebSocketServer } = require('ws');
 function peerProxy(server) {
   const socketServer = new WebSocketServer({ server });
 
-  // Add a broadcast method to the socketServer
   socketServer.broadcast = function broadcast(message) {
     socketServer.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
@@ -14,29 +13,57 @@ function peerProxy(server) {
 
   socketServer.on('connection', (socket) => {
     socket.isAlive = true;
-    console.log("Alive")
-    // Whenever a message is received, broadcast a simple notification
+    console.log("Alive");
+
     socket.on('message', function message(data) {
-      console.log(data)
-      console.log("IN the message part")
-      // Instead of forwarding the data directly, notify all other clients
+      console.log("IN the on message in PeerProxy");
       socketServer.clients.forEach((client) => {
         if (client !== socket && client.readyState === WebSocket.OPEN) {
           client.send(JSON.stringify({ type: 'playerUpdate' }));
+          console.log("sent to all players");
         }
       });
     });
 
-    // Maintain alive status with ping/pong
     socket.on('pong', () => {
       socket.isAlive = true;
     });
+
+    socket.on('switch', () => {
+      socketServer.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(JSON.stringify({ type: 'switchToChoose' }));
+        }
+      });
+    });
+
+
+    socket.on('close', () => {
+      console.log('Client disconnected');
+      socketServer.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(JSON.stringify({ type: 'playerUpdate' }));
+        }
+      });
+    });
   });
 
-  // Heartbeat
   setInterval(() => {
-    socketServer.clients.forEach(function each(client) {
-      if (client.isAlive === false) return client.terminate();
+    socketServer.clients.forEach((client) => {
+      if (client.isAlive === false) {
+        console.log('Client disconnected');
+        client.terminate();
+  
+        // Notify other clients about the disconnect
+        socketServer.clients.forEach((c) => {
+          if (c.readyState === WebSocket.OPEN) {
+            c.send(JSON.stringify({ type: 'playerUpdate' }));
+          }
+        });
+  
+        return;
+      }
+  
       client.isAlive = false;
       client.ping();
     });

@@ -1,11 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { initSocket, getSocket } from '../socket';
 import './play.css';
+
 
 export function Play({user, setUser, lastTheme, setLastTheme}) {
   const navigate = useNavigate();
 
   const [userInfo, setUserInfo] = React.useState('');
+
+  const fetchCurrentPlayers = async (temp_user) => {
+    console.log("this is : ", temp_user);
+    try {
+      console.log("Fetching current players for:", temp_user);
+      const res = await fetch(`/api/currentPlayers?user=${encodeURIComponent(temp_user)}`, {
+        credentials: 'include'
+      });
+  
+      if (!res.ok) throw new Error("Failed to fetch current players");
+      const data = await res.json();
+      setPlayers(data.players);
+    } catch (error) {
+      console.error("Error fetching current players:", error);
+    }
+  };
 
   useEffect(() => {
     (async () => {
@@ -18,7 +36,8 @@ export function Play({user, setUser, lastTheme, setLastTheme}) {
         
         setUser(data.username);
         setUserInfo(data);
-        
+        console.log(data.username);
+        fetchCurrentPlayers(data.username);
   
         // Fetch user theme
         const themeRes = await fetch('/api/usertheme', { credentials: 'include' });
@@ -33,56 +52,51 @@ export function Play({user, setUser, lastTheme, setLastTheme}) {
     })();
   }, []);
 
-  const fetchCurrentPlayers = async () => {
-    if (!user) {
-      console.log("User not set, skipping fetchCurrentPlayers");
-      return;
-    }
+  // React.useEffect(() => {
+  //   const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+  //   let port = window.location.port;
+  //   const socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
+    
+  //   socket.onopen = () => {
+  //     socket.send({ type: 'playerUpdate' })
+  //   }
+
+  //   socket.onswitch = (event) => {
+  //     console.log("Working in onswitch")
+  //     const message = JSON.parse(event.data);
+  //     if (message.type === 'switchToChoose') {
+  //       navigate('/choose');
+  //     }
+  //   };
+
+  //   console.log('why')
+  //   socket.onmessage = (event) => {
+  //     console.log("Working")
+  //     const message = JSON.parse(event.data);
+  //     if (message.type === 'playerUpdate') {
+  //       fetchCurrentPlayers(user);  // reload player list
+  //     }
+  //   };
   
-    try {
-      console.log("Fetching current players for:", user);
-      const res = await fetch(`/api/currentPlayers?user=${encodeURIComponent(user)}`, {
-        credentials: 'include'
-      });
-  
-      if (!res.ok) throw new Error("Failed to fetch current players");
-      const data = await res.json();
-      setPlayers(data.players);
-    } catch (error) {
-      console.error("Error fetching current players:", error);
-    }
-  };
+  //   return () => {
+  //     socket.close();
+  //   };
+  // }, [user]);
 
   useEffect(() => {
-    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const socket = new WebSocket(`${protocol}://${window.location.host}`);
-    
-    console.log('why')
-    socket.onmessage = (event) => {
-      console.log("Working")
+    const socket = initSocket((event) => {
       const message = JSON.parse(event.data);
       if (message.type === 'playerUpdate') {
-        fetchCurrentPlayers();  // reload player list
+        fetchCurrentPlayers(user);
+      } else if (message.type === 'switchToChoose') {
+        navigate('/choose');
       }
-    };
+    });
   
-    return () => {
-      socket.close();
-    };
-  }, []);
-
+  }, [user]);
 
   const [players, setPlayers] = useState([]);
   const [choosenTheme, setChoosenTheme] = React.useState("Famous People");
-
-
-  // useEffect(() => {
-  //   if (user) {
-  //     fetchCurrentPlayers();
-  //     const interval = setInterval(fetchCurrentPlayers, 10000);
-  //     return () => clearInterval(interval);
-  //   }
-  // }, [user]); // Trigger ONLY when user is available
 
 
   function changeChoosenTheme(e) {
@@ -108,6 +122,8 @@ export function Play({user, setUser, lastTheme, setLastTheme}) {
 
   async function handleReadyButton() {
     setLastTheme(choosenTheme);
+    const socket = getSocket();
+    socket.send({ type: 'playerUpdate' })
 
     try {
       const res = await fetch('/api/updateTheme', {
@@ -128,7 +144,7 @@ export function Play({user, setUser, lastTheme, setLastTheme}) {
     if (lastTheme) {
       setChoosenTheme(lastTheme);  
     }
-  }, [lastTheme]); 
+  }, [lastTheme]);
     
 
   return (

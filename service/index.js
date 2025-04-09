@@ -23,8 +23,10 @@ const httpService = app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
 
-const wss = peerProxy(httpService)
-console.log('WebSocket server initialized:', wss);
+const wss = peerProxy(httpService);
+
+
+//console.log('WebSocket server initialized:', wss);
 
 
 // Fetch the list of chosen names from the database
@@ -153,7 +155,7 @@ apiRouter.post('/auth', async (req, res) => {
     const user = await createUser(req.body.username, req.body.password);
     setAuthCookie(res, user.token);
 
-    wss.broadcast({ type: 'playerUpdate' });
+    //wss.broadcast({ type: 'playerUpdate' });
 
     res.send({ username: user.username });
   }
@@ -169,7 +171,8 @@ apiRouter.put('/auth', async (req, res) => {
         await DB.setCurrentPlayerState(user, true);
         setAuthCookie(res, user.token);
 
-        wss.broadcast({ type: 'playerUpdate' });
+        //wss.broadcast({ type: 'playerUpdate' });
+        
 
         res.send({ username: user.username });
         return;
@@ -187,7 +190,7 @@ apiRouter.delete('/auth/logout', async (req, res) => {
     await DB.updateUser(user);
     await DB.setCurrentPlayerState(user, false);
 
-    wss.broadcast({ type: 'playerUpdate' });
+    //wss.broadcast({ type: 'playerUpdate' });
   }
   res.clearCookie(authCookieName);
   res.status(204).end();
@@ -275,7 +278,6 @@ function setAuthCookie(res, authToken) {
   });
   
 }
-
 
 
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+//import './play/gameUpdater.js';
 
 export function Login({setUser}) {
     
@@ -16,6 +17,7 @@ export function Login({setUser}) {
         createAuth('post');
     }
     
+    
     async function createAuth(method) {
         const res = await fetch('api/auth', {
             method: method,
@@ -28,6 +30,7 @@ export function Login({setUser}) {
         if (res.ok) {
             const username = data.username;
             console.log("logged in as:", username)
+            
             navigate('/play');
         } else {
             alert('Authentication failed');
